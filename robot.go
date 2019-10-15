@@ -1,4 +1,4 @@
-package ding_go
+package ding
 
 import (
 	"bytes"
@@ -9,18 +9,18 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/Berry961103/ding"
+	"github.com/Berry961103/ding/entity"
 )
 
 // SendDingRobot Send text messages to ding robot
 func SendDingRobot(msg, token string, phone []string) error {
-	t := ding.TextType{
+	t := entity.TextType{
 		Content: msg,
 	}
-	a := ding.AtType{
+	a := entity.AtType{
 		AtMobiles: phone,
 	}
-	g := ding.SendGrouptype{
+	g := entity.SendGrouptype{
 		MsgType: "text",
 		Text:    t,
 		At:      a,
@@ -35,7 +35,7 @@ func SendDingRobot(msg, token string, phone []string) error {
 }
 
 // SendGroup 发送消息到钉钉群机器人
-func sendGroup(token string, sendGroup ding.SendGrouptype) error {
+func sendGroup(token string, sendGroup entity.SendGrouptype) error {
 
 	client := &http.Client{
 		Timeout: time.Duration(15) * time.Second,
@@ -59,7 +59,7 @@ func sendGroup(token string, sendGroup ding.SendGrouptype) error {
 		return err
 	}
 
-	var respData ding.SendGroupResp
+	var respData entity.SendGroupResp
 	err = json.Unmarshal(data, &respData)
 	if err != nil {
 		return err
