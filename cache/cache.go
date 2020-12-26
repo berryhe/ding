@@ -9,6 +9,7 @@ import (
 var (
 	// ErrKeyNotFound key不存在
 	ErrKeyNotFound = errors.New("key not found")
+
 	// ErrCacheExpired 缓存的值已过期
 	ErrCacheExpired = errors.New("cache expired")
 

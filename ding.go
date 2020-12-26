@@ -37,18 +37,18 @@ type AppConfig struct {
 
 // 创建实例
 func newApp(config AppConfig) (app *App) {
-	instance := App{
+	instance := &App{
 		Config: config,
 		accessToken: AccessToken{
 			cache: cache.NewDefaultCache(),
 		},
 	}
 
-	instance.Client = Client{Ctx: &instance}
+	instance.Client = Client{Ctx: instance}
 
 	// instance.Logger = log.New(os.Stdout, "", log.LstdFlags|log.Llongfile)
 
-	return &instance
+	return instance
 }
 
 // SetAccessTokenCacheDriver 设置 AccessToken 缓存器 默认为内存缓存
@@ -57,8 +57,8 @@ func (app *App) SetAccessTokenCacheDriver(driver cache.Cache) {
 	app.accessToken.cache = driver
 }
 
-// SetGetAccessTokenHandler 设置 AccessToken 获取方法。默认 从sync.Map获取（过期从钉钉接口刷新）
-// 如果有多实例服务，可以设置为 Redis 或 RPC 等中控服务器 获取 就可以避免 AccessToken 刷新冲突
+// SetGetAccessTokenHandler 设置 AccessToken 获取方法。默认从sync.Map获取（过期从钉钉接口刷新）
+// 如果有多实例服务，可以设置为 Redis 或 rpc 等中间件中获取就可以避免 AccessToken 刷新冲突
 func (app *App) SetGetAccessTokenHandler(f GetAccessTokenFunc) {
 	app.accessToken.getAccessTokenHandler = f
 }
