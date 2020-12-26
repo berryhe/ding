@@ -5,7 +5,7 @@ import (
 	"net/http"
 	"os"
 
-	"github.com/Berry961103/cache"
+	"github.com/Berry961103/ding/cache"
 )
 
 // GetAccessTokenFunc 获取 access_token 方法接口
