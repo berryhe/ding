@@ -52,7 +52,7 @@ func (client *Client) httpGet(uri string) (resp []byte, err error) {
 	}
 
 	req.Header.Add("User-Agent", UserAgent)
-	response, err := client.Ctx.httpClient.Do(req)
+	response, err := client.Ctx.HTTPClient.Do(req)
 
 	if err != nil {
 		return
@@ -91,7 +91,7 @@ func (client *Client) httpPost(uri string, payload io.Reader, contentType string
 
 	req.Header.Add("User-Agent", UserAgent)
 	req.Header.Add("Content-Type", contentType)
-	response, err := client.Ctx.httpClient.Do(req)
+	response, err := client.Ctx.HTTPClient.Do(req)
 
 	if err != nil {
 		return

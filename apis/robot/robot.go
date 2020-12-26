@@ -36,7 +36,7 @@ func SendDingGroupRobot(ctx *ding.App, sendGroup entity.SendGrouptype) error {
 		return err
 	}
 
-	url := fmt.Sprintf("%s%s?access_token=%s", ding.DingdingServerURL, robotAPI, ctx.Config.RebotToken)
+	url := fmt.Sprintf("%s%s?access_token=%s", ding.DingdingServerURL, robotAPI, ctx.Config.RobotToken)
 	_, err = ctx.Client.RobotHTTPPost(url, bytes.NewReader(reqData), ding.DefaultPostDecodeStr)
 
 	return err

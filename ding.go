@@ -13,8 +13,7 @@ type GetAccessTokenFunc func() (accessToken string, err error)
 type App struct {
 	Config      AppConfig
 	accessToken AccessToken
-	Client      Client
-	httpClient  *http.Client
+	HTTPClient  *http.Client
 	logger      Logger
 }
 
@@ -31,24 +30,18 @@ type AppConfig struct {
 	AppKey         string
 	AppSecret      string
 	Token          string
-	RebotToken     string
+	RobotToken     string
 	EncodingAESKey string
 }
 
 // 创建实例
 func newApp(config AppConfig) (app *App) {
-	instance := &App{
+	return &App{
 		Config: config,
 		accessToken: AccessToken{
 			cache: cache.NewDefaultCache(),
 		},
 	}
-
-	instance.Client = Client{Ctx: instance}
-
-	// instance.Logger = log.New(os.Stdout, "", log.LstdFlags|log.Llongfile)
-
-	return instance
 }
 
 // SetAccessTokenCacheDriver 设置 AccessToken 缓存器 默认为内存缓存

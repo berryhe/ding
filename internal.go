@@ -55,7 +55,7 @@ func (app *App) refreshAccessToken() (accessToken string, expiresIn int, err err
 	params.Add("appsecret", app.Config.AppSecret)
 
 	apiGetToken := fmt.Sprintf("%s/gettoken?%s", DingdingServerURL, params.Encode())
-	response, err := app.httpClient.Get(apiGetToken)
+	response, err := app.HTTPClient.Get(apiGetToken)
 	if err != nil {
 		return
 	}
