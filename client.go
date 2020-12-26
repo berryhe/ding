@@ -43,7 +43,7 @@ func (client *Client) httpGet(uri string) (resp []byte, err error) {
 
 	uri = DingdingServerURL + uri
 	if client.Ctx.Logger != nil {
-		client.Ctx.Logger.Printf("GET %s", uri)
+		client.Ctx.Logger.Debugf("GET %s", uri)
 	}
 
 	req, err := http.NewRequest(http.MethodGet, uri, nil)
@@ -80,7 +80,7 @@ func (client *Client) httpPost(uri string, payload io.Reader, contentType string
 
 	uri = DingdingServerURL + uri
 	if client.Ctx.Logger != nil {
-		client.Ctx.Logger.Printf("POST %s", uri)
+		client.Ctx.Logger.Debugf("POST %s", uri)
 	}
 
 	req, err := http.NewRequest(http.MethodPost, uri, payload)

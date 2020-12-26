@@ -40,7 +40,7 @@ func (app *App) GetAccessToken() (accessToken string, err error) {
 	_ = app.accessToken.Cache.Save(cacheKey, accessToken, d)
 
 	if app.Logger != nil {
-		app.Logger.Printf("%s %s %d\n", "refreshAccessTokenFromServer", accessToken, expiresIn)
+		app.Logger.Debugf("%s %s %d\n", "refreshAccessTokenFromServer", accessToken, expiresIn)
 	}
 
 	return

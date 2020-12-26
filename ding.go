@@ -1,9 +1,7 @@
 package ding
 
 import (
-	"log"
 	"net/http"
-	"os"
 
 	"github.com/Berry961103/ding/cache"
 )
@@ -19,7 +17,7 @@ type App struct {
 	accessToken AccessToken
 	Client      Client
 	httpClient  *http.Client
-	Logger      *log.Logger
+	Logger      Logger
 }
 
 /*
@@ -52,7 +50,7 @@ func newApp(config AppConfig) (app *App) {
 
 	instance.Client = Client{Ctx: &instance}
 
-	instance.Logger = log.New(os.Stdout, "", log.LstdFlags|log.Llongfile)
+	// instance.Logger = log.New(os.Stdout, "", log.LstdFlags|log.Llongfile)
 
 	return &instance
 }
@@ -76,6 +74,6 @@ SetLogger 日志记录 默认输出到 os.Stdout
 
 如果不想开启日志，可以 SetLogger(nil)
 */
-func (app *App) SetLogger(logger *log.Logger) {
+func (app *App) SetLogger(logger Logger) {
 	app.Logger = logger
 }
