@@ -9,40 +9,40 @@ import (
 var (
 	// ErrKeyNotFound key不存在
 	ErrKeyNotFound = errors.New("key not found")
-	// ErrCacheExpired returns an error when the cache key was expired.
+	// ErrCacheExpired 缓存的值已过期
 	ErrCacheExpired = errors.New("cache expired")
 
-	// ErrFlush returns an error when flush fails.
+	// ErrFlush 清空缓存失败
 	ErrFlush = errors.New("unable to flush")
 
-	// ErrSave returns an error when save fails.
+	// ErrSave 存储缓存失败
 	ErrSave = errors.New("unable to save")
 
-	// ErrDelete returns an error when deletion fails.
+	// ErrDelete 删除缓存失败
 	ErrDelete = errors.New("unable to delete")
 
-	// ErrDecode returns an errors when decode fails.
+	// ErrDecode 缓存解析失败
 	ErrDecode = errors.New("unable to decode")
 )
 
 // Cache is the top-level cache interface
 type Cache interface {
 
-	// Contains check if a cached key exists
+	// Contains 缓存是否存在
 	Contains(key string) bool
 
-	// Delete remove the cached key
+	// Delete 根据key删除缓存
 	Delete(key string) error
 
-	// Fetch retrieve the cached key value
+	// Fetch 读取一个缓存
 	Fetch(key string) (string, error)
 
-	// FetchMulti retrieve multiple cached keys value
+	// FetchMulti 读取多个缓存
 	FetchMulti(keys []string) map[string]string
 
-	// Flush remove all cached keys
+	// Flush 清空所有key
 	Flush() error
 
-	// Save cache a value by key
+	// Save 保存一个key
 	Save(key string, value string, lifeTime time.Duration) error
 }

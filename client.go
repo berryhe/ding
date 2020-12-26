@@ -42,8 +42,8 @@ func (client *Client) HTTPGet(uri string) (resp []byte, err error) {
 func (client *Client) httpGet(uri string) (resp []byte, err error) {
 
 	uri = DingdingServerURL + uri
-	if client.Ctx.Logger != nil {
-		client.Ctx.Logger.Debugf("GET %s", uri)
+	if client.Ctx.logger != nil {
+		client.Ctx.logger.Debugf("GET %s", uri)
 	}
 
 	req, err := http.NewRequest(http.MethodGet, uri, nil)
@@ -57,6 +57,7 @@ func (client *Client) httpGet(uri string) (resp []byte, err error) {
 	if err != nil {
 		return
 	}
+
 	defer response.Body.Close()
 	return responseFilter(response)
 }
@@ -79,8 +80,8 @@ func (client *Client) RobotHTTPPost(uri string, payload io.Reader, contentType s
 func (client *Client) httpPost(uri string, payload io.Reader, contentType string) (resp []byte, err error) {
 
 	uri = DingdingServerURL + uri
-	if client.Ctx.Logger != nil {
-		client.Ctx.Logger.Debugf("POST %s", uri)
+	if client.Ctx.logger != nil {
+		client.Ctx.logger.Debugf("POST %s", uri)
 	}
 
 	req, err := http.NewRequest(http.MethodPost, uri, payload)
@@ -102,7 +103,7 @@ func (client *Client) httpPost(uri string, payload io.Reader, contentType string
 
 // 在请求地址上附加上 access_token
 func (client *Client) applyAccessToken(oldURL string) (newURL string, err error) {
-	accessToken, err := client.Ctx.accessToken.GetAccessTokenHandler()
+	accessToken, err := client.Ctx.accessToken.getAccessTokenHandler()
 	if err != nil {
 		return
 	}
