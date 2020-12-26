@@ -6,7 +6,6 @@ import (
 	"io/ioutil"
 	"net/http"
 	"net/url"
-	"sync"
 	"time"
 )
 
@@ -17,23 +16,12 @@ func NewApp(config AppConfig) (app *App) {
 	return
 }
 
-// 防止多个 goroutine 并发刷新冲突
-var getAccessTokenLock sync.Mutex
-
 // GetAccessToken 获取token
 // 从 应用 实例 的 TenantAccessToken 管理器 获取 access_token
 // 如果没有 access_token 或者 已过期，那么刷新
 func (app *App) GetAccessToken() (accessToken string, err error) {
 
 	cacheKey := "access_token:" + app.Config.AppKey
-	accessToken, err = app.accessToken.Cache.Fetch(cacheKey)
-	if accessToken != "" {
-		return
-	}
-
-	getAccessTokenLock.Lock()
-	defer getAccessTokenLock.Unlock()
-
 	accessToken, err = app.accessToken.Cache.Fetch(cacheKey)
 	if accessToken != "" {
 		return
