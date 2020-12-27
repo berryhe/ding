@@ -25,25 +25,20 @@ var (
 	DingdingServerURL = "https://oapi.dingtalk.com"
 )
 
-// Client 用于向接口发送请求
-type Client struct {
-	Ctx *App
-}
-
 // HTTPGet GET 请求
-func (client *Client) HTTPGet(uri string) (resp []byte, err error) {
-	uri, err = client.applyAccessToken(uri)
+func (ctx *App) HTTPGet(uri string) (resp []byte, err error) {
+	uri, err = ctx.applyAccessToken(uri)
 	if err != nil {
 		return
 	}
-	return client.httpGet(uri)
+	return ctx.httpGet(uri)
 }
 
-func (client *Client) httpGet(uri string) (resp []byte, err error) {
+func (ctx *App) httpGet(uri string) (resp []byte, err error) {
 
 	uri = DingdingServerURL + uri
-	if client.Ctx.logger != nil {
-		client.Ctx.logger.Debugf("GET %s", uri)
+	if ctx.logger != nil {
+		ctx.logger.Debugf("GET %s", uri)
 	}
 
 	req, err := http.NewRequest(http.MethodGet, uri, nil)
@@ -52,7 +47,7 @@ func (client *Client) httpGet(uri string) (resp []byte, err error) {
 	}
 
 	req.Header.Add("User-Agent", UserAgent)
-	response, err := client.Ctx.HTTPClient.Do(req)
+	response, err := ctx.httpClient.Do(req)
 
 	if err != nil {
 		return
@@ -63,25 +58,26 @@ func (client *Client) httpGet(uri string) (resp []byte, err error) {
 }
 
 //HTTPPost POST 请求
-func (client *Client) HTTPPost(uri string, payload []byte, contentType string) (resp []byte, err error) {
-	uri, err = client.applyAccessToken(uri)
+func (ctx *App) HTTPPost(uri string, payload []byte, contentType string) (resp []byte, err error) {
+	uri, err = ctx.applyAccessToken(uri)
 	if err != nil {
 		return
 	}
 
-	return client.httpPost(uri, bytes.NewReader(payload), contentType)
+	return ctx.httpPost(uri, bytes.NewReader(payload), contentType)
 }
 
 // RobotHTTPPost 为钉钉群机器人专门封装一个
-func (client *Client) RobotHTTPPost(uri string, payload io.Reader, contentType string) (resp []byte, err error) {
-	return client.httpPost(uri, payload, contentType)
+func (ctx *App) RobotHTTPPost(uri string, payload io.Reader, contentType string) (resp []byte, err error) {
+	url := fmt.Sprintf("%s%s?access_token=%s", DingdingServerURL, uri, ctx.Config.RobotToken)
+	return ctx.httpPost(url, payload, contentType)
 }
 
-func (client *Client) httpPost(uri string, payload io.Reader, contentType string) (resp []byte, err error) {
+func (ctx *App) httpPost(uri string, payload io.Reader, contentType string) (resp []byte, err error) {
 
 	uri = DingdingServerURL + uri
-	if client.Ctx.logger != nil {
-		client.Ctx.logger.Debugf("POST %s", uri)
+	if ctx.logger != nil {
+		ctx.logger.Debugf("POST %s", uri)
 	}
 
 	req, err := http.NewRequest(http.MethodPost, uri, payload)
@@ -91,7 +87,7 @@ func (client *Client) httpPost(uri string, payload io.Reader, contentType string
 
 	req.Header.Add("User-Agent", UserAgent)
 	req.Header.Add("Content-Type", contentType)
-	response, err := client.Ctx.HTTPClient.Do(req)
+	response, err := ctx.httpClient.Do(req)
 
 	if err != nil {
 		return
@@ -102,8 +98,8 @@ func (client *Client) httpPost(uri string, payload io.Reader, contentType string
 }
 
 // 在请求地址上附加上 access_token
-func (client *Client) applyAccessToken(oldURL string) (newURL string, err error) {
-	accessToken, err := client.Ctx.accessToken.getAccessTokenHandler()
+func (ctx *App) applyAccessToken(oldURL string) (newURL string, err error) {
+	accessToken, err := ctx.accessToken.getAccessTokenHandler()
 	if err != nil {
 		return
 	}

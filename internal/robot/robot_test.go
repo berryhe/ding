@@ -6,14 +6,13 @@ import (
 	"github.com/Berry961103/ding"
 )
 
-func TestRobot(t *testing.T) {
+func TestRobotText(t *testing.T) {
 	config := ding.AppConfig{
 		RobotToken: "",
 	}
 	appCtx := ding.NewApp(config)
 
-	g := MakeDingRobotTextEntity("berry", []string{"12345678"})
-	err := SendDingGroupRobot(appCtx, g)
+	err := DingRobotText(appCtx, "berry", []string{"12345678"})
 	if err != nil {
 		t.Fatal(err)
 	}

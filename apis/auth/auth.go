@@ -1,4 +1,4 @@
-// Package auth 身份验证
+// Package auth 身份验证 interface
 package auth
 
 import (
@@ -15,5 +15,5 @@ const (
 // See: https://ding-doc.dingtalk.com/document#/org-dev-guide/address-book-permissions
 // GET https://oapi.dingtalk.com/auth/scopes?access_token=ACCESS_TOKEN
 func GetAuthScopes(ctx *ding.App, params url.Values) (resp []byte, err error) {
-	return ctx.Client.HTTPGet(apiAuthScopes + "?" + params.Encode())
+	return ctx.HTTPGet(apiAuthScopes + "?" + params.Encode())
 }

@@ -13,7 +13,7 @@ type GetAccessTokenFunc func() (accessToken string, err error)
 type App struct {
 	Config      AppConfig
 	accessToken AccessToken
-	HTTPClient  *http.Client
+	httpClient  *http.Client
 	logger      Logger
 }
 
@@ -26,12 +26,20 @@ type AccessToken struct {
 // AppConfig 主配置
 type AppConfig struct {
 	CorpID         string
-	AgentID        string
+	AgentID        int
 	AppKey         string
 	AppSecret      string
 	Token          string
 	RobotToken     string
 	EncodingAESKey string
+}
+
+// NewApp 初始化项
+func NewApp(config AppConfig) (app *App) {
+	app = newApp(config)
+	app.accessToken.getAccessTokenHandler = app.GetAccessToken
+	app.httpClient = &http.Client{}
+	return
 }
 
 // 创建实例
@@ -42,6 +50,11 @@ func newApp(config AppConfig) (app *App) {
 			cache: cache.NewDefaultCache(),
 		},
 	}
+}
+
+// SetHTTPClient 自定义设置钉钉Api请求HTTP客户端
+func (app *App) SetHTTPClient(client *http.Client) {
+	app.httpClient = client
 }
 
 // SetAccessTokenCacheDriver 设置 AccessToken 缓存器 默认为内存缓存

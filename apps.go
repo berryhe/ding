@@ -8,13 +8,6 @@ import (
 	"time"
 )
 
-// NewApp 初始化项
-func NewApp(config AppConfig) (app *App) {
-	app = newApp(config)
-	app.accessToken.getAccessTokenHandler = app.GetAccessToken
-	return
-}
-
 // GetAccessToken 获取token
 // 从缓存获取 access_token
 // 如果没有 access_token 或者 已过期，那么刷新
@@ -55,7 +48,7 @@ func (app *App) refreshAccessToken() (accessToken string, expiresIn int, err err
 	params.Add("appsecret", app.Config.AppSecret)
 
 	apiGetToken := fmt.Sprintf("%s/gettoken?%s", DingdingServerURL, params.Encode())
-	response, err := app.HTTPClient.Get(apiGetToken)
+	response, err := app.httpClient.Get(apiGetToken)
 	if err != nil {
 		return
 	}
