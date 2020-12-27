@@ -8,7 +8,7 @@ import (
 
 func TestRobotText(t *testing.T) {
 	config := ding.AppConfig{
-		RobotToken: "",
+		RobotToken: "1111",
 	}
 	appCtx := ding.NewApp(config)
 

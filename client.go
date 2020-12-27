@@ -69,7 +69,7 @@ func (ctx *App) HTTPPost(uri string, payload []byte, contentType string) (resp [
 
 // RobotHTTPPost 为钉钉群机器人专门封装一个
 func (ctx *App) RobotHTTPPost(uri string, payload io.Reader, contentType string) (resp []byte, err error) {
-	url := fmt.Sprintf("%s%s?access_token=%s", DingdingServerURL, uri, ctx.Config.RobotToken)
+	url := fmt.Sprintf("%s?access_token=%s", uri, ctx.Config.RobotToken)
 	return ctx.httpPost(url, payload, contentType)
 }
 
