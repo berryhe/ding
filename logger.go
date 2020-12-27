@@ -4,21 +4,21 @@ package ding
 type Logger interface {
 	Info(v ...interface{})
 
-	Infof(template string, v ...interface{})
+	Infof(template string, args ...interface{})
 
-	Warn(v ...interface{})
+	Warn(args ...interface{})
 
-	Warnf(template string, v ...interface{})
+	Warnf(template string, args ...interface{})
 
-	Debug(v ...interface{})
+	Debug(args ...interface{})
 
 	Debugf(template string, args ...interface{})
 
-	Error(v ...interface{})
+	Error(args ...interface{})
 
-	Errorf(template string, v ...interface{})
+	Errorf(template string, args ...interface{})
 
-	Fatal(v ...interface{})
+	Fatal(args ...interface{})
 
-	Fatalf(template string, v ...interface{})
+	Fatalf(template string, args ...interface{})
 }

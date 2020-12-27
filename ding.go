@@ -38,14 +38,14 @@ type AppConfig struct {
 func NewApp(config AppConfig) (app *App) {
 	app = newApp(config)
 	app.accessToken.getAccessTokenHandler = app.GetAccessToken
-	app.httpClient = &http.Client{}
 	return
 }
 
 // 创建实例
 func newApp(config AppConfig) (app *App) {
 	return &App{
-		Config: config,
+		Config:     config,
+		httpClient: &http.Client{},
 		accessToken: AccessToken{
 			cache: cache.NewDefaultCache(),
 		},
