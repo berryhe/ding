@@ -2,7 +2,7 @@ package ding
 
 // Logger 日志接口
 type Logger interface {
-	Info(v ...interface{})
+	Info(args ...interface{})
 
 	Infof(template string, args ...interface{})
 
