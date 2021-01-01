@@ -99,7 +99,7 @@ func (ctx *App) httpPost(uri string, payload io.Reader, contentType string) (res
 
 // 在请求地址上附加上 access_token
 func (ctx *App) applyAccessToken(oldURL string) (newURL string, err error) {
-	accessToken, err := ctx.accessToken.getAccessTokenHandler()
+	accessToken, err := ctx.accessToken.getAccessTokenHandler(ctx.Config.AppKey, ctx.Config.AppSecret)
 	if err != nil {
 		return
 	}

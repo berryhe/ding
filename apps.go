@@ -8,12 +8,12 @@ import (
 	"time"
 )
 
-// GetAccessToken 获取token
 // 从缓存获取 access_token
-// 如果没有 access_token 或者 已过期，那么刷新
-func (app *App) GetAccessToken() (accessToken string, err error) {
+// 如果没有 access_token 或者已过期，那就刷新
+func (app *App) getAccessToken(appKey, appSecretKey string) (accessToken string, err error) {
 
-	cacheKey := "access_token:" + app.Config.AppKey
+	cacheKey := fmt.Sprintf("ding_access_token:%s", appKey)
+
 	accessToken, err = app.accessToken.cache.Fetch(cacheKey)
 	if accessToken != "" {
 		return
@@ -21,7 +21,7 @@ func (app *App) GetAccessToken() (accessToken string, err error) {
 
 	var expiresIn int
 
-	accessToken, expiresIn, err = app.refreshAccessToken()
+	accessToken, expiresIn, err = app.refreshAccessToken(appKey, appSecretKey)
 	if err != nil {
 		return
 	}
@@ -41,11 +41,11 @@ func (app *App) GetAccessToken() (accessToken string, err error) {
 // refreshAccessToken 从服务器获取新的
 // See: https://ding-doc.dingtalk.com/document#/org-dev-guide/obtain-access_token
 // GET https://oapi.dingtalk.com/gettoken?appkey=appkey&appsecret=appsecret
-func (app *App) refreshAccessToken() (accessToken string, expiresIn int, err error) {
+func (app *App) refreshAccessToken(appKey, appSecretKey string) (accessToken string, expiresIn int, err error) {
 
 	params := url.Values{}
-	params.Add("appkey", app.Config.AppKey)
-	params.Add("appsecret", app.Config.AppSecret)
+	params.Add("appkey", appKey)
+	params.Add("appsecret", appSecretKey)
 
 	apiGetToken := fmt.Sprintf("%s/gettoken?%s", DingdingServerURL, params.Encode())
 	response, err := app.httpClient.Get(apiGetToken)
@@ -56,7 +56,7 @@ func (app *App) refreshAccessToken() (accessToken string, expiresIn int, err err
 	defer response.Body.Close()
 
 	if response.StatusCode != http.StatusOK {
-		err = fmt.Errorf("GET %s RETURN %s", apiGetToken, response.Status)
+		err = fmt.Errorf("ding apis：%shttp response code：%s", apiGetToken, response.Status)
 		return
 	}
 

@@ -62,10 +62,10 @@
     appCtx.SetAccessTokenCacheDriver(cache)
 
 ## 获取acces_token
-### 每次api的调用都会先去调一次获取access_token的方法，请在获取access_token的方法逻辑里面存入缓存和获取缓存的逻辑，如想自实现请参考源码中默认[GetAccessToken](https://github.com/Berry961103/ding/blob/master/apps.go)方法的实现
-    按照 type GetAccessTokenFunc func() (accessToken string, err error) 类型传gettoken方法即可
+### 每次api的调用都会先去调一次获取access_token的方法，请在获取access_token的方法逻辑里面存入缓存和获取缓存的逻辑，如想自实现请参考源码中默认[getAccessToken](https://github.com/Berry961103/ding/blob/master/apps.go)方法的实现
 
-    func GetAccessToken()(string,error){
+    // appKey和appSecretKey 会自动帮你从appCoonfig中设置的传入
+    func GetAccessToken(appKey, appSecretKey string)(string,error){
         // 你的代码
         return accessToken,nil
     }

@@ -9,9 +9,9 @@ import (
 
 func TestCreate(t *testing.T) {
 	config := ding.AppConfig{
-		AgentID:   251419465,
-		AppKey:    "ding7ujwcr5ldqpaj8gv",
-		AppSecret: "BRkNLDSg_6f8AzrYDSHUMqmsNxxp6mwc4eoFwfFEsvey2Ju51S-ibUUI3wlLRMlZ",
+		AgentID:   12345678,
+		AppKey:    "dingappkey",
+		AppSecret: "dingappSecretKey",
 	}
 	appCtx := ding.NewApp(config)
 

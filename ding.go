@@ -7,7 +7,7 @@ import (
 )
 
 // GetAccessTokenFunc 获取 access_token 方法接口
-type GetAccessTokenFunc func() (accessToken string, err error)
+type GetAccessTokenFunc func(appKey, appSecret string) (accessToken string, err error)
 
 // App 实例
 type App struct {
@@ -37,7 +37,7 @@ type AppConfig struct {
 // NewApp 初始化项
 func NewApp(config AppConfig) (app *App) {
 	app = newApp(config)
-	app.accessToken.getAccessTokenHandler = app.GetAccessToken
+	app.accessToken.getAccessTokenHandler = app.getAccessToken
 	return
 }
 
