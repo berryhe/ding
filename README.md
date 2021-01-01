@@ -25,7 +25,7 @@
         }
     }
 ## API的实现
-#### 目前实现的功能比较少，后面有空会慢慢添加，目前实现功能在[internal]https://github.com/Berry961103/ding/tree/master/internal)中。请持续关注
+#### 目前实现的功能比较少，后面有空会慢慢添加，目前实现功能在[internal](https://github.com/Berry961103/ding/tree/master/internal)中。请持续关注
     import (
         "fmt"
 
