@@ -73,7 +73,7 @@
 
 ### 日志
 
-    日志目前只输出debug级别的日志，只需要实现[logger](https://github.com/Berry961103/ding/blob/master/logger.go) 接口即可
+#### 日志目前只输出debug级别的日志，只需要实现 [logger](https://github.com/Berry961103/ding/blob/master/logger.go) 接口即可
 
     支持zap
 
