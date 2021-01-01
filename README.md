@@ -1,5 +1,5 @@
 # DingAPI Server Golang SDK
-    封装操作钉钉api，核心功能已实现。后面会在闲余时间慢慢的加上各种api的实现，意在开箱即用，请给个start
+    封装操作钉钉api，核心功能已实现。后面会在闲余时间慢慢的加上各种api的实现，意在开箱即用。请给个star
 # 安装
 
     go get -u github.com/Berry961103/ding
