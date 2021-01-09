@@ -17,7 +17,7 @@
         config := ding.DingConfig{
             RobotToken: "1111",
         }
-        dingCtx := ding.NewApp(config)
+        dingCtx := ding.NewDCtx(config)
 
         err := robot.DingRobotText(dingCtx, "berry", []string{"12345678"})
         if err != nil {
