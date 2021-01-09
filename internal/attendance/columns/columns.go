@@ -1,5 +1,3 @@
-// MIT License
-
 // Copyright (c) 2019 Berryhe
 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -20,27 +18,5 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-package ding
-
-// Logger 日志接口
-type Logger interface {
-	Info(args ...interface{})
-
-	Infof(template string, args ...interface{})
-
-	Warn(args ...interface{})
-
-	Warnf(template string, args ...interface{})
-
-	Debug(args ...interface{})
-
-	Debugf(template string, args ...interface{})
-
-	Error(args ...interface{})
-
-	Errorf(template string, args ...interface{})
-
-	Fatal(args ...interface{})
-
-	Fatalf(template string, args ...interface{})
-}
+// Package columns
+package columns

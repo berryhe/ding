@@ -20,27 +20,39 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-package ding
+package entity
 
-// Logger 日志接口
-type Logger interface {
-	Info(args ...interface{})
+// 查询请假状态 实体
+type (
+	// AttendanceLeaveRequest 查询请假状态请求
+	AttendanceLeaveRequest struct {
+		StartTime  int64  `json:"start_time"`
+		Offset     int    `json:"offset"`
+		Size       int    `json:"size"`
+		EndTime    int64  `json:"end_time"`
+		UseridList string `json:"userid_list"`
+	}
 
-	Infof(template string, args ...interface{})
+	// AttendanceLeaveResp 查询请假状态返回
+	AttendanceLeaveResp struct {
+		Errcode   int         `json:"errcode"`
+		Result    LeaveResult `json:"result"`
+		Success   bool        `json:"success"`
+		RequestID string      `json:"request_id"`
+	}
 
-	Warn(args ...interface{})
+	// LeaveResult 请假状态返回
+	LeaveResult struct {
+		HasMore     bool          `json:"has_more"`
+		LeaveStatus []LeaveStatus `json:"leave_status"`
+	}
 
-	Warnf(template string, args ...interface{})
-
-	Debug(args ...interface{})
-
-	Debugf(template string, args ...interface{})
-
-	Error(args ...interface{})
-
-	Errorf(template string, args ...interface{})
-
-	Fatal(args ...interface{})
-
-	Fatalf(template string, args ...interface{})
-}
+	// LeaveStatus 请假状态
+	LeaveStatus struct {
+		DurationPercent int    `json:"duration_percent"`
+		DurationUnit    string `json:"duration_unit"`
+		EndTime         int64  `json:"end_time"`
+		StartTime       int64  `json:"start_time"`
+		Userid          string `json:"userid"`
+	}
+)

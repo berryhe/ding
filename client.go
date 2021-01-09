@@ -1,3 +1,26 @@
+// MIT License
+
+// Copyright (c) 2019 Berryhe
+
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
+
+// The above copyright notice and this permission notice shall be included in all
+// copies or substantial portions of the Software.
+
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+// SOFTWARE.
+
+// Package ding http 请求客户端封装
 package ding
 
 import (
@@ -26,19 +49,19 @@ var (
 )
 
 // HTTPGet GET 请求
-func (ctx *App) HTTPGet(uri string) (resp []byte, err error) {
-	uri, err = ctx.applyAccessToken(uri)
+func (dctx *DingCtx) HTTPGet(uri string) (resp []byte, err error) {
+	uri, err = dctx.applyAccessToken(uri)
 	if err != nil {
 		return
 	}
-	return ctx.httpGet(uri)
+	return dctx.httpGet(uri)
 }
 
-func (ctx *App) httpGet(uri string) (resp []byte, err error) {
+func (dctx *DingCtx) httpGet(uri string) (resp []byte, err error) {
 
 	uri = DingdingServerURL + uri
-	if ctx.logger != nil {
-		ctx.logger.Debugf("GET %s", uri)
+	if dctx.logger != nil {
+		dctx.logger.Debugf("GET %s", uri)
 	}
 
 	req, err := http.NewRequest(http.MethodGet, uri, nil)
@@ -47,7 +70,7 @@ func (ctx *App) httpGet(uri string) (resp []byte, err error) {
 	}
 
 	req.Header.Add("User-Agent", UserAgent)
-	response, err := ctx.httpClient.Do(req)
+	response, err := dctx.httpClient.Do(req)
 
 	if err != nil {
 		return
@@ -58,26 +81,26 @@ func (ctx *App) httpGet(uri string) (resp []byte, err error) {
 }
 
 //HTTPPost POST 请求
-func (ctx *App) HTTPPost(uri string, payload []byte, contentType string) (resp []byte, err error) {
-	uri, err = ctx.applyAccessToken(uri)
+func (dctx *DingCtx) HTTPPost(uri string, payload []byte, contentType string) (resp []byte, err error) {
+	uri, err = dctx.applyAccessToken(uri)
 	if err != nil {
 		return
 	}
 
-	return ctx.httpPost(uri, bytes.NewReader(payload), contentType)
+	return dctx.httpPost(uri, bytes.NewReader(payload), contentType)
 }
 
 // RobotHTTPPost 为钉钉群机器人专门封装一个
-func (ctx *App) RobotHTTPPost(uri string, payload io.Reader, contentType string) (resp []byte, err error) {
-	url := fmt.Sprintf("%s?access_token=%s", uri, ctx.Config.RobotToken)
-	return ctx.httpPost(url, payload, contentType)
+func (dctx *DingCtx) RobotHTTPPost(uri string, payload io.Reader, contentType string) (resp []byte, err error) {
+	url := fmt.Sprintf("%s?access_token=%s", uri, dctx.Config.RobotToken)
+	return dctx.httpPost(url, payload, contentType)
 }
 
-func (ctx *App) httpPost(uri string, payload io.Reader, contentType string) (resp []byte, err error) {
+func (dctx *DingCtx) httpPost(uri string, payload io.Reader, contentType string) (resp []byte, err error) {
 
 	uri = DingdingServerURL + uri
-	if ctx.logger != nil {
-		ctx.logger.Debugf("POST %s", uri)
+	if dctx.logger != nil {
+		dctx.logger.Debugf("POST %s", uri)
 	}
 
 	req, err := http.NewRequest(http.MethodPost, uri, payload)
@@ -87,7 +110,7 @@ func (ctx *App) httpPost(uri string, payload io.Reader, contentType string) (res
 
 	req.Header.Add("User-Agent", UserAgent)
 	req.Header.Add("Content-Type", contentType)
-	response, err := ctx.httpClient.Do(req)
+	response, err := dctx.httpClient.Do(req)
 
 	if err != nil {
 		return
@@ -98,8 +121,8 @@ func (ctx *App) httpPost(uri string, payload io.Reader, contentType string) (res
 }
 
 // 在请求地址上附加上 access_token
-func (ctx *App) applyAccessToken(oldURL string) (newURL string, err error) {
-	accessToken, err := ctx.accessToken.getAccessTokenHandler(ctx.Config.AppKey, ctx.Config.AppSecret)
+func (dctx *DingCtx) applyAccessToken(oldURL string) (newURL string, err error) {
+	accessToken, err := dctx.accessToken.getAccessTokenHandler(dctx.Config.AppKey, dctx.Config.AppSecret)
 	if err != nil {
 		return
 	}

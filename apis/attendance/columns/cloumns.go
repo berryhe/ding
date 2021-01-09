@@ -20,27 +20,18 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-package ding
+// Package cloumns 考勤组信息管理 interface
+package cloumns
 
-// Logger 日志接口
-type Logger interface {
-	Info(args ...interface{})
+import "github.com/Berry961103/ding"
 
-	Infof(template string, args ...interface{})
+const (
+	apiAttendanceGetSimpleGroups = "/topapi/attendance/getsimplegroups"
+)
 
-	Warn(args ...interface{})
-
-	Warnf(template string, args ...interface{})
-
-	Debug(args ...interface{})
-
-	Debugf(template string, args ...interface{})
-
-	Error(args ...interface{})
-
-	Errorf(template string, args ...interface{})
-
-	Fatal(args ...interface{})
-
-	Fatalf(template string, args ...interface{})
+// AttendanceGetSimpleGroups 批量获取考勤组详情
+// See https://ding-doc.dingtalk.com/document#/org-dev-guide/queries-attendance-group-list-details
+// POST https://oapi.dingtalk.com/topapi/attendance/getsimplegroups?access_token=ACCESS_TOKEN
+func AttendanceGetSimpleGroups(dctx *ding.DingCtx, payload []byte) ([]byte, error) {
+	return dctx.HTTPPost(apiAttendanceGetSimpleGroups, payload, ding.DefaultPostDecodeStr)
 }

@@ -1,3 +1,25 @@
+// MIT License
+
+// Copyright (c) 2019 Berryhe
+
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
+
+// The above copyright notice and this permission notice shall be included in all
+// copies or substantial portions of the Software.
+
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+// SOFTWARE.
+
 // Package entity 考情打卡结构体
 package entity
 
@@ -82,5 +104,25 @@ type (
 		LocationMethod    string  `json:"locationMethod"`
 		InvalidRecordType string  `json:"invalidRecordType,omitempty"`
 		InvalidRecordMsg  string  `json:"invalidRecordMsg,omitempty"`
+	}
+)
+
+// 上传打卡记录 请求与响应实体
+type (
+	// AttendanceRecordUploadRequest 上传打卡记录 请求
+	AttendanceRecordUploadRequest struct {
+		DeviceName    string `json:"device_name"`
+		DeviceID      string `json:"device_id"`
+		UserCheckTime int64  `json:"user_check_time"`
+		PhotoURL      string `json:"photo_url"`
+		Userid        string `json:"userid"`
+	}
+
+	// AttendanceRecordUploadResp 上传打卡记录 响应
+	AttendanceRecordUploadResp struct {
+		Errcode   int    `json:"errcode"`
+		Success   bool   `json:"success"`
+		Errmsg    string `json:"errmsg"`
+		RequestID string `json:"request_id"`
 	}
 )

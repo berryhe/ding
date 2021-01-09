@@ -20,27 +20,32 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-package ding
+// Package leave 假勤审批-> 查询请假状态
+package leave
 
-// Logger 日志接口
-type Logger interface {
-	Info(args ...interface{})
+import (
+	"encoding/json"
 
-	Infof(template string, args ...interface{})
+	"github.com/Berry961103/ding"
+	"github.com/Berry961103/ding/apis/attendance/checkin"
+	"github.com/Berry961103/ding/entity"
+)
 
-	Warn(args ...interface{})
+// AttendanceGetLeaveStatus 查询请假状态
+func AttendanceGetLeaveStatus(dctx *ding.DingCtx, alr entity.AttendanceLeaveRequest) (resp entity.AttendanceLeaveResp, err error) {
+	playload, err := json.Marshal(alr)
+	if err != nil {
+		return resp, err
+	}
 
-	Warnf(template string, args ...interface{})
+	data, err := checkin.AttendanceList(dctx, playload)
+	if err != nil {
+		return
+	}
 
-	Debug(args ...interface{})
+	if err = json.Unmarshal(data, &resp); err != nil {
+		return
+	}
 
-	Debugf(template string, args ...interface{})
-
-	Error(args ...interface{})
-
-	Errorf(template string, args ...interface{})
-
-	Fatal(args ...interface{})
-
-	Fatalf(template string, args ...interface{})
+	return
 }

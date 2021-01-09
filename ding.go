@@ -1,3 +1,25 @@
+// MIT License
+
+// Copyright (c) 2019 Berryhe
+
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
+
+// The above copyright notice and this permission notice shall be included in all
+// copies or substantial portions of the Software.
+
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+// SOFTWARE.
+
 package ding
 
 import (
@@ -10,8 +32,8 @@ import (
 type GetAccessTokenFunc func(appKey, appSecret string) (accessToken string, err error)
 
 // App 实例
-type App struct {
-	Config      AppConfig
+type DingCtx struct {
+	Config      DingConfig
 	accessToken AccessToken
 	httpClient  *http.Client
 	logger      Logger
@@ -23,8 +45,8 @@ type AccessToken struct {
 	getAccessTokenHandler GetAccessTokenFunc
 }
 
-// AppConfig 主配置
-type AppConfig struct {
+// DingConfig 主配置
+type DingConfig struct {
 	CorpID         string
 	AgentID        int
 	AppKey         string
@@ -34,16 +56,16 @@ type AppConfig struct {
 	EncodingAESKey string
 }
 
-// NewApp 初始化项
-func NewApp(config AppConfig) (app *App) {
-	app = newApp(config)
+// NewDCtx 初始化项
+func NewDCtx(config DingConfig) (app *DingCtx) {
+	app = newDCtx(config)
 	app.accessToken.getAccessTokenHandler = app.getAccessToken
 	return
 }
 
 // 创建实例
-func newApp(config AppConfig) (app *App) {
-	return &App{
+func newDCtx(config DingConfig) (app *DingCtx) {
+	return &DingCtx{
 		Config:     config,
 		httpClient: &http.Client{},
 		accessToken: AccessToken{
@@ -53,24 +75,24 @@ func newApp(config AppConfig) (app *App) {
 }
 
 // SetHTTPClient 自定义设置钉钉Api请求HTTP客户端
-func (app *App) SetHTTPClient(client *http.Client) {
-	app.httpClient = client
+func (dctx *DingCtx) SetHTTPClient(client *http.Client) {
+	dctx.httpClient = client
 }
 
 // SetAccessTokenCacheDriver 设置 AccessToken 缓存器 默认为内存缓存
 // 驱动接口类型 为 cache.Cache
-func (app *App) SetAccessTokenCacheDriver(driver cache.Cache) {
-	app.accessToken.cache = driver
+func (dctx *DingCtx) SetAccessTokenCacheDriver(driver cache.Cache) {
+	dctx.accessToken.cache = driver
 }
 
 // SetGetAccessTokenHandler 设置 AccessToken 获取方法。默认从sync.Map获取（过期从钉钉接口刷新）
 // 如果有多实例服务，可以设置为 Redis 或 rpc 等中间件中获取就可以避免 AccessToken 刷新冲突
-func (app *App) SetGetAccessTokenHandler(f GetAccessTokenFunc) {
-	app.accessToken.getAccessTokenHandler = f
+func (dctx *DingCtx) SetGetAccessTokenHandler(f GetAccessTokenFunc) {
+	dctx.accessToken.getAccessTokenHandler = f
 }
 
 // SetLogger 日志记录
 // 默认不开启日志，开了也只是输出debug级别的日志
-func (app *App) SetLogger(logger Logger) {
-	app.logger = logger
+func (dctx *DingCtx) SetLogger(logger Logger) {
+	dctx.logger = logger
 }

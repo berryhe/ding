@@ -20,27 +20,18 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-package ding
+// Package leave 假勤审批-> 查询请假状态 interface
+package leave
 
-// Logger 日志接口
-type Logger interface {
-	Info(args ...interface{})
+import "github.com/Berry961103/ding"
 
-	Infof(template string, args ...interface{})
+const (
+	apiAttendanceGetLeaveStatus = "/topapi/attendance/getleavestatus"
+)
 
-	Warn(args ...interface{})
-
-	Warnf(template string, args ...interface{})
-
-	Debug(args ...interface{})
-
-	Debugf(template string, args ...interface{})
-
-	Error(args ...interface{})
-
-	Errorf(template string, args ...interface{})
-
-	Fatal(args ...interface{})
-
-	Fatalf(template string, args ...interface{})
+// AttendanceGetLeaveStatus 查询请假状态
+// See https://ding-doc.dingtalk.com/document#/org-dev-guide/query-leave-status
+// POST https://oapi.dingtalk.com/topapi/attendance/getleavestatus?access_token=ACCESS_TOKEN
+func AttendanceGetLeaveStatus(dctx *ding.DingCtx, payload []byte) ([]byte, error) {
+	return dctx.HTTPPost(apiAttendanceGetLeaveStatus, payload, ding.DefaultPostDecodeStr)
 }
