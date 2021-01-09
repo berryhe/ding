@@ -14,12 +14,12 @@
     )
 
     func main() {
-        config := ding.AppConfig{
+        config := ding.DingConfig{
             RobotToken: "1111",
         }
-        appCtx := ding.NewApp(config)
+        dingCtx := ding.NewApp(config)
 
-        err := robot.DingRobotText(appCtx, "berry", []string{"12345678"})
+        err := robot.DingRobotText(dingCtx, "berry", []string{"12345678"})
         if err != nil {
            panic(err)
         }
@@ -35,15 +35,15 @@
     )
 
     func main(){
-        config := ding.AppConfig{
+        config := ding.DingConfig{
             AgentID:   12345678,
             AppKey:    "AppKey",
             AppSecret: "AppSecre",
         }
-        appCtx := ding.NewApp(config)
+        dingCtx := ding.NewDCtx(config)
 
         calendarCreate := entity.CalendarCreateRequest{}
-        resp, err := calendar.Create(appCtx, calendarCreate)
+        resp, err := calendar.Create(dingCtx, calendarCreate)
         if err != nil {
             fmt.Println(err)
             return
@@ -59,7 +59,7 @@
 #### 按照[cache](https://github.com/Berry961103/ding/blob/master/cache/cache.go)接口实现功能就可以自定义缓存token
 
     cache:=&RedisCacheImpl{}
-    appCtx.SetAccessTokenCacheDriver(cache)
+    dingCtx.SetAccessTokenCacheDriver(cache)
 
 ## 获取acces_token
 ### 每次api的调用都会先去调一次获取access_token的方法，请在获取access_token的方法逻辑里面存入缓存和获取缓存的逻辑，如想自实现请参考源码中默认[getAccessToken](https://github.com/Berry961103/ding/blob/master/apps.go)方法的实现
@@ -70,7 +70,7 @@
         return accessToken,nil
     }
 
-    appCtx.SetGetAccessTokenHandler(GetAccessToken)
+    dingCtx.SetGetAccessTokenHandler(GetAccessToken)
 
 ### 日志
 
@@ -80,12 +80,12 @@
 
         logger, _ := zap.NewProduction()
         sugar := logger.Sugar()
-        appCtx.SetLogger(sugar)
+        dingCtx.SetLogger(sugar)
 
     支持logrus
 
         loggger = logrus.New() 
-        appCtx.SetLogger(sugar)   
+        dingCtx.SetLogger(sugar)   
 
 ### 钉钉请求API的HTTP客户端配置
 
@@ -94,6 +94,6 @@
         // ... 其他自定义配置
     }
 
-    appCtx.SetHTTPClient(httpClient)
+    dingCtx.SetHTTPClient(httpClient)
 
 
