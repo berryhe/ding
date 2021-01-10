@@ -99,12 +99,12 @@ type (
 type (
 	// CountUserRequest 获取员工人数请求
 	CountUserRequest struct {
-		OnlyActive string `json:"only_active"`
+		OnlyActive bool `json:"only_active"`
 	}
 	// CountUserResp 获取员工人数返回
 	CountUserResp struct {
-		Errcode   int             `json:"errcode"`
-		Errmsg    string          `json:"errmsg"`
+		ErrCode   int             `json:"errcode"`
+		ErrMsg    string          `json:"errmsg"`
 		Result    CountUserResult `json:"result"`
 		RequestID string          `json:"request_id"`
 	}
@@ -127,5 +127,228 @@ type (
 	UserAdminListResult struct {
 		SysLevel int    `json:"sys_level"`
 		Userid   string `json:"userid"`
+	}
+)
+
+// 创建用户
+type (
+	CreateUserRequest struct {
+		Extension     string              `json:"extension"`
+		Mobile        string              `json:"mobile"`
+		Remark        string              `json:"remark"`
+		Telephone     string              `json:"telephone"`
+		HideMobile    string              `json:"hide_mobile"`
+		HiredDate     string              `json:"hired_date"`
+		Title         string              `json:"title"`
+		Userid        string              `json:"userid"`
+		DeptTitleList []UserDeptTitleList `json:"dept_title_list"`
+		WorkPlace     string              `json:"work_place"`
+		DeptOrderList []UserDeptOrderList `json:"dept_order_list"`
+		SeniorMode    string              `json:"senior_mode"`
+		OrgEmail      string              `json:"org_email"`
+		Name          string              `json:"name"`
+		DeptIDList    string              `json:"dept_id_list"`
+		JobNumber     string              `json:"job_number"`
+		Email         string              `json:"email"`
+	}
+	UserDeptTitleList struct {
+		DeptID int    `json:"dept_id"`
+		Title  string `json:"title"`
+	}
+	UserDeptOrderList struct {
+		DeptID int `json:"dept_id"`
+		Order  int `json:"order"`
+	}
+
+	CreateUserResp struct {
+		ErrCode   int          `json:"errcode"`
+		Result    CreateResult `json:"result"`
+		RequestID string       `json:"request_id"`
+	}
+	CreateResult struct {
+		Userid string `json:"userid"`
+	}
+)
+
+// 更新用户
+type (
+	UserUpdateRequest struct {
+		Extension     string              `json:"extension"`
+		Telephone     string              `json:"telephone"`
+		Remark        string              `json:"remark"`
+		HideMobile    string              `json:"hide_mobile"`
+		Title         string              `json:"title"`
+		HiredDate     string              `json:"hired_date"`
+		Userid        string              `json:"userid"`
+		DeptTitleList []UserDeptTitleList `json:"dept_title_list"`
+		WorkPlace     string              `json:"work_place"`
+		DeptOrderList []UserDeptOrderList `json:"dept_order_list"`
+		SeniorMode    string              `json:"senior_mode"`
+		OrgEmail      string              `json:"org_email"`
+		Name          string              `json:"name"`
+		DeptIDList    string              `json:"dept_id_list"`
+		JobNumber     string              `json:"job_number"`
+		Email         string              `json:"email"`
+	}
+
+	UserUpdateResp struct {
+		ErrCode   int    `json:"errcode"`
+		ErrMsg    string `json:"errmsg"`
+		RequestID string `json:"request_id"`
+	}
+)
+
+// 获取管理员列表
+type (
+	AdminListResp struct {
+		ErrCode   int           `json:"errcode"`
+		ErrMsg    string        `json:"errmsg"`
+		Result    []AdminResult `json:"result"`
+		RequestID string        `json:"request_id"`
+	}
+	AdminResult struct {
+		SysLevel int    `json:"sys_level"`
+		Userid   string `json:"userid"`
+	}
+)
+
+// 获取未登录钉钉的员工列表
+type (
+	GetInactiveRequest struct {
+		IsActive  bool   `json:"is_active"`
+		Offset    int    `json:"offset"`
+		Size      int    `json:"size"`
+		DeptIds   []int  `json:"dept_ids"`
+		QueryDate string `json:"query_date"`
+	}
+
+	GetInactiveResp struct {
+		ErrCode   int               `json:"errcode"`
+		Result    GetInactiveResult `json:"result"`
+		RequestID string            `json:"request_id"`
+	}
+
+	GetInactiveResult struct {
+		HasMore bool     `json:"has_more"`
+		List    []string `json:"list"`
+	}
+)
+
+// AdminScopeResp 管理员权限
+type AdminScopeResp struct {
+	DeptIDs   []int  `json:"dept_ids"`
+	ErrCode   int    `json:"errcode"`
+	ErrMsg    string `json:"errmsg"`
+	RequestID string `json:"request_id"`
+}
+
+// 获取部门用户详情
+type (
+	DepUserListRequest struct {
+		DeptID     int    `json:"dept_id"`
+		Cursor     int    `json:"cursor"`
+		Size       int    `json:"size"`
+		OrderField string `json:"order_field"`
+		Language   string `json:"language"`
+	}
+
+	DepUserListResp struct {
+		ErrCode   int           `json:"errcode"`
+		ErrMsg    string        `json:"errmsg"`
+		Result    DepUserResult `json:"result"`
+		RequestID string        `json:"request_id"`
+	}
+	DepUserList struct {
+		Active           bool   `json:"active"`
+		Admin            bool   `json:"admin"`
+		Avatar           string `json:"avatar"`
+		Boss             bool   `json:"boss"`
+		DeptIDList       []int  `json:"dept_id_list"`
+		DeptOrder        int    `json:"dept_order"`
+		ExclusiveAccount bool   `json:"exclusiveAccount"`
+		Extension        string `json:"extension"`
+		HideMobile       bool   `json:"hide_mobile"`
+		Leader           bool   `json:"leader"`
+		Mobile           string `json:"mobile"`
+		Name             string `json:"name"`
+		Remark           string `json:"remark"`
+		StateCode        string `json:"state_code"`
+		Telephone        string `json:"telephone"`
+		UnionID          string `json:"unionid"`
+		UserID           string `json:"userid"`
+		WorkPlace        string `json:"work_place"`
+	}
+	DepUserResult struct {
+		HasMore    bool          `json:"has_more"`
+		List       []DepUserList `json:"list"`
+		NextCursor int           `json:"next_cursor"`
+	}
+)
+
+// 获取部门用户
+type (
+	UserListSimpleRequest struct {
+		Cursor             int    `json:"cursor"`
+		ContainAccessLimit bool   `json:"contain_access_limit"`
+		Size               int    `json:"size"`
+		OrderField         string `json:"order_field"`
+		Language           string `json:"language"`
+		DeptID             string `json:"dept_id"`
+	}
+
+	UserListSimpleResp struct {
+		ErrCode   int                  `json:"errcode"`
+		ErrMsg    string               `json:"errmsg"`
+		Result    UserListSimpleResult `json:"result"`
+		RequestID string               `json:"request_id"`
+	}
+	UserListSimpleList struct {
+		Name   string `json:"name"`
+		Userid string `json:"userid"`
+	}
+	UserListSimpleResult struct {
+		HasMore    bool                 `json:"has_more"`
+		NextCursor int                  `json:"next_cursor"`
+		List       []UserListSimpleList `json:"list"`
+	}
+)
+
+// 获取部门用户userid列表
+type (
+	ListUsersResp struct {
+		ErrCode   int             `json:"errcode"`
+		ErrMsg    string          `json:"errmsg"`
+		Result    ListUsersResult `json:"result"`
+		RequestID string          `json:"request_id"`
+	}
+	ListUsersResult struct {
+		UseridList []string `json:"userid_list"`
+	}
+)
+
+// 根据手机号获取userid
+type (
+	UserMobileByIDResp struct {
+		ErrCode   string               `json:"errcode"`
+		ErrMsg    string               `json:"errmsg"`
+		Result    UserMobileByIDResult `json:"result"`
+		RequestID string               `json:"request_id"`
+	}
+	UserMobileByIDResult struct {
+		UserID string `json:"userid"`
+	}
+)
+
+// 根据unionID获取用户信息
+type (
+	UnionIDByUserIDResp struct {
+		ErrCode   string              `json:"errcode"`
+		ErrMsg    string              `json:"errmsg"`
+		Result    UnionIDByUserResult `json:"result"`
+		RequestID string              `json:"request_id"`
+	}
+	UnionIDByUserResult struct {
+		ContactType string `json:"contact_type"`
+		UserID      string `json:"userid"`
 	}
 )

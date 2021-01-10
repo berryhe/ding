@@ -24,15 +24,18 @@
 package robot
 
 import (
+	"bytes"
 	"encoding/json"
 
 	"github.com/Berry961103/ding"
-	"github.com/Berry961103/ding/apis/robot"
 	"github.com/Berry961103/ding/entity"
+)
+const (
+	robotAPI = "/robot/send"
 )
 
 // DingRobotText Send ding robot text
-func DingRobotText(ctx *ding.App, msg string, phone []string) error {
+func DingRobotText(dctx *ding.DingCtx, msg string, phone []string) error {
 
 	sg := entity.SendGrouptype{
 		MsgType: "text",
@@ -50,5 +53,6 @@ func DingRobotText(ctx *ding.App, msg string, phone []string) error {
 		return err
 	}
 
-	return robot.SendDingGroupRobot(ctx, reqData)
+	_,err=dctx.RobotHTTPPost(robotAPI, bytes.NewReader(reqData), ding.DefaultPostDecodeStr)
+	return err
 }

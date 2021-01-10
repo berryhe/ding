@@ -25,14 +25,21 @@ package checkin
 
 import (
 	"encoding/json"
+	"errors"
 
 	"github.com/Berry961103/ding"
-	"github.com/Berry961103/ding/apis/attendance/checkin"
 	"github.com/Berry961103/ding/entity"
+)
+
+const (
+	apiAttendanceList         = "/attendance/list"
+	apiAttendanceListRecord   = "/attendance/listRecord"
+	apiAttendanceUploadRecord = "/topapi/attendance/record/upload"
 )
 
 // LoopAttendanceCheckinList 如果查询的dingids数量超过50，可帮助循环查询所有
 func LoopAttendanceCheckinList(dctx *ding.DingCtx, dingIDs []string, workDateFrom, workDateTo string, isI18N bool) ([]entity.AttendanceCheckinListResp, error) {
+
 	arc := entity.AttendanceCheckinListRequest{
 		WorkDateFrom: workDateFrom,
 		WorkDateTo:   workDateTo,
@@ -44,32 +51,41 @@ func LoopAttendanceCheckinList(dctx *ding.DingCtx, dingIDs []string, workDateFro
 
 	var resps []entity.AttendanceCheckinListResp
 
-	resp, err := AttendanceCheckinList(dctx, arc)
-	if err != nil {
-		return nil, err
-	}
-	resps = append(resps, resp)
+	var dfs func(entity.AttendanceCheckinListRequest)
 
-	for resp.HasMore {
-		arc.Offset += arc.Limit
+	dfs = func(arc entity.AttendanceCheckinListRequest) {
 		resp, err := AttendanceCheckinList(dctx, arc)
 		if err != nil {
-			return nil, err
+			return
 		}
 
 		resps = append(resps, resp)
+		if resp.HasMore {
+			arc.Offset += arc.Limit
+			dfs(arc)
+		}
 	}
+
+	dfs(arc)
 	return resps, nil
 }
 
 // AttendanceCheckinList 获取打卡结果
-func AttendanceCheckinList(dctx *ding.DingCtx, acr entity.AttendanceCheckinListRequest) (resp entity.AttendanceCheckinListResp, err error) {
-	playload, err := json.Marshal(acr)
+// See https://ding-doc.dingtalk.com/document#/org-dev-guide/get-punch-results
+// POST https://oapi.dingtalk.com/attendance/list?access_token=ACCESS_TOKEN
+func AttendanceCheckinList(dCtx *ding.DingCtx, acr entity.AttendanceCheckinListRequest) (resp entity.AttendanceCheckinListResp, err error) {
+
+	if acr.Limit > 50 || acr.Offset < 0 {
+		err = errors.New("offset 小于0 或 Limit大于50")
+		return
+	}
+
+	playLoad, err := json.Marshal(acr)
 	if err != nil {
 		return resp, err
 	}
 
-	data, err := checkin.AttendanceList(dctx, playload)
+	data, err := dCtx.HTTPPost(apiAttendanceList, playLoad, ding.DefaultPostDecodeStr)
 	if err != nil {
 		return
 	}
@@ -83,13 +99,15 @@ func AttendanceCheckinList(dctx *ding.DingCtx, acr entity.AttendanceCheckinListR
 }
 
 // AttendanceListRecord 获取打卡详情
-func AttendanceListRecord(dctx *ding.DingCtx, alr entity.AttendanceListRecordRequest) (resp entity.AttendanceListRecordResp, err error) {
-	playload, err := json.Marshal(alr)
+// See https://ding-doc.dingtalk.com/document#/org-dev-guide/attendance-clock-in-record-is-open
+// POST https://oapi.dingtalk.com/attendance/listrecord?access_token=ACCESS_TOKEN
+func AttendanceListRecord(dCtx *ding.DingCtx, alr entity.AttendanceListRecordRequest) (resp entity.AttendanceListRecordResp, err error) {
+	playLoad, err := json.Marshal(alr)
 	if err != nil {
 		return resp, err
 	}
 
-	data, err := checkin.AttendanceListRecord(dctx, playload)
+	data, err := dCtx.HTTPPost(apiAttendanceList, playLoad, ding.DefaultPostDecodeStr)
 	if err != nil {
 		return
 	}
@@ -102,13 +120,15 @@ func AttendanceListRecord(dctx *ding.DingCtx, alr entity.AttendanceListRecordReq
 }
 
 // AttendanceRecordUpload 上传打卡记录
-func AttendanceRecordUpload(dctx *ding.DingCtx, aru entity.AttendanceRecordUploadRequest) (resp entity.AttendanceRecordUploadResp, err error) {
-	playload, err := json.Marshal(aru)
+// See https://ding-doc.dingtalk.com/document#/org-dev-guide/upload-punch-records
+// POST https://oapi.dingtalk.com/topapi/attendance/record/upload?access_token=ACCESS_TOKEN
+func AttendanceRecordUpload(dCtx *ding.DingCtx, aru entity.AttendanceRecordUploadRequest) (resp entity.AttendanceRecordUploadResp, err error) {
+	playLoad, err := json.Marshal(aru)
 	if err != nil {
 		return resp, err
 	}
 
-	data, err := checkin.AttendanceUploadRecord(dctx, playload)
+	data, err := dCtx.HTTPPost(apiAttendanceUploadRecord, playLoad, ding.DefaultPostDecodeStr)
 	if err != nil {
 		return
 	}

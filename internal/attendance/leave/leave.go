@@ -27,18 +27,25 @@ import (
 	"encoding/json"
 
 	"github.com/Berry961103/ding"
-	"github.com/Berry961103/ding/apis/attendance/checkin"
+
 	"github.com/Berry961103/ding/entity"
 )
 
+const (
+	apiAttendanceGetLeaveStatus = "/topapi/attendance/getleavestatus"
+)
+
 // AttendanceGetLeaveStatus 查询请假状态
-func AttendanceGetLeaveStatus(dctx *ding.DingCtx, alr entity.AttendanceLeaveRequest) (resp entity.AttendanceLeaveResp, err error) {
-	playload, err := json.Marshal(alr)
+// See https://ding-doc.dingtalk.com/document#/org-dev-guide/query-leave-status
+// POST https://oapi.dingtalk.com/topapi/attendance/getleavestatus?access_token=ACCESS_TOKEN
+
+func AttendanceGetLeaveStatus(dCtx *ding.DingCtx, alr entity.AttendanceLeaveRequest) (resp entity.AttendanceLeaveResp, err error) {
+	playLoad, err := json.Marshal(alr)
 	if err != nil {
 		return resp, err
 	}
 
-	data, err := checkin.AttendanceList(dctx, playload)
+	data, err := dCtx.HTTPPost(apiAttendanceGetLeaveStatus, playLoad, ding.DefaultPostDecodeStr)
 	if err != nil {
 		return
 	}

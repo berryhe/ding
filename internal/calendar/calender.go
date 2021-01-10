@@ -27,18 +27,26 @@ import (
 	"encoding/json"
 
 	"github.com/Berry961103/ding"
-	"github.com/Berry961103/ding/apis/calendar"
 	"github.com/Berry961103/ding/entity"
 )
 
+const (
+	apiCreate         = "/topapi/calendar/v2/event/create"
+	apiUpdate         = "/topapi/calendar/v2/event/update"
+	apiCancel         = "/topapi/calendar/v2/event/cancel"
+	apiAttendeeUpdate = "/topapi/calendar/v2/attendee/update"
+)
+
 // Create 钉日程的创建
-func Create(ctx *ding.App, calendarCreate entity.CalendarCreateRequest) (calenderCreateResp entity.CalendarCreateResp, err error) {
+// See: https://ding-doc.dingtalk.com/document#/org-dev-guide/create-schedule
+// POST https://oapi.dingtalk.com/topapi/calendar/v2/event/update?access_token=ACCESS_TOKEN
+func Create(ctx *ding.DingCtx, calendarCreate entity.CalendarCreateRequest) (calenderCreateResp entity.CalendarCreateResp, err error) {
 	playload, err := json.Marshal(calendarCreate)
 	if err != nil {
 		return
 	}
 
-	resp, err := calendar.Create(ctx, playload)
+	resp, err := ctx.HTTPPost(apiCreate, playload, ding.DefaultPostDecodeStr)
 	if err != nil {
 		return
 	}
@@ -50,13 +58,15 @@ func Create(ctx *ding.App, calendarCreate entity.CalendarCreateRequest) (calende
 }
 
 // Update 钉日程的修改
-func Update(ctx *ding.App, calendarUpdate entity.CalendarUpdateRequest) (calendarUpdateResp entity.CalendarUpdateResp, err error) {
+// See: https://ding-doc.dingtalk.com/document#/org-dev-guide/create-schedule
+// POST https://oapi.dingtalk.com/topapi/calendar/v2/event/update?access_token=ACCESS_TOKEN
+func Update(ctx *ding.DingCtx, calendarUpdate entity.CalendarUpdateRequest) (calendarUpdateResp entity.CalendarUpdateResp, err error) {
 	playload, err := json.Marshal(calendarUpdate)
 	if err != nil {
 		return
 	}
 
-	resp, err := calendar.Update(ctx, playload)
+	resp, err := ctx.HTTPPost(apiUpdate, playload, ding.DefaultPostDecodeStr)
 	if err != nil {
 		return
 	}
@@ -68,13 +78,15 @@ func Update(ctx *ding.App, calendarUpdate entity.CalendarUpdateRequest) (calenda
 }
 
 // AttendeeUpdate 修改日程参与者
-func AttendeeUpdate(ctx *ding.App, calendarAtUpdate entity.CalendarAttendeeUpdateRequest) (calendarUpdateAtResp entity.CalendarAttendeeUpdateResp, err error) {
+// See: https://ding-doc.dingtalk.com/document#/org-dev-guide/modify-schedule-participant
+// POST POST https://oapi.dingtalk.com/topapi/calendar/v2/attendee/update?access_token=ACCESS_TOKEN
+func AttendeeUpdate(ctx *ding.DingCtx, calendarAtUpdate entity.CalendarAttendeeUpdateRequest) (calendarUpdateAtResp entity.CalendarAttendeeUpdateResp, err error) {
 	playload, err := json.Marshal(calendarAtUpdate)
 	if err != nil {
 		return
 	}
 
-	resp, err := calendar.AttendeeUpdate(ctx, playload)
+	resp, err := ctx.HTTPPost(apiAttendeeUpdate, playload, ding.DefaultPostDecodeStr)
 	if err != nil {
 		return
 	}
@@ -86,13 +98,15 @@ func AttendeeUpdate(ctx *ding.App, calendarAtUpdate entity.CalendarAttendeeUpdat
 }
 
 // Cancel 钉日程的取消
-func Cancel(ctx *ding.App, calendarCancel entity.CalendarCancelRequest) (calendarCancelResp entity.CalendarCancelRespo, err error) {
+// See: https://ding-doc.dingtalk.com/document#/org-dev-guide/cancel-schedule
+// POST POST https://oapi.dingtalk.com/topapi/calendar/v2/event/cancel?access_token=ACCESS_TOKEN
+func Cancel(ctx *ding.DingCtx, calendarCancel entity.CalendarCancelRequest) (calendarCancelResp entity.CalendarCancelRespo, err error) {
 	playload, err := json.Marshal(calendarCancel)
 	if err != nil {
 		return
 	}
 
-	resp, err := calendar.Cancel(ctx, playload)
+	resp, err := ctx.HTTPPost(apiCancel, playload, ding.DefaultPostDecodeStr)
 	if err != nil {
 		return
 	}

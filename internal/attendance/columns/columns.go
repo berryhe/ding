@@ -20,3 +20,16 @@
 
 // Package columns
 package columns
+
+import "github.com/Berry961103/ding"
+
+const (
+	apiAttendanceGetSimpleGroups = "/topapi/attendance/getsimplegroups"
+)
+
+// AttendanceGetSimpleGroups 批量获取考勤组详情
+// See https://ding-doc.dingtalk.com/document#/org-dev-guide/queries-attendance-group-list-details
+// POST https://oapi.dingtalk.com/topapi/attendance/getsimplegroups?access_token=ACCESS_TOKEN
+func AttendanceGetSimpleGroups(dCtx *ding.DingCtx, payload []byte) ([]byte, error) {
+	return dCtx.HTTPPost(apiAttendanceGetSimpleGroups, payload, ding.DefaultPostDecodeStr)
+}
