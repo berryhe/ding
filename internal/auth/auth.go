@@ -36,6 +36,6 @@ const (
 // GetAuthScopes 获取通讯录权限范围
 // See: https://ding-doc.dingtalk.com/document#/org-dev-guide/address-book-permissions
 // GET https://oapi.dingtalk.com/auth/scopes?access_token=ACCESS_TOKEN
-func GetAuthScopes(ctx *ding.DingCtx, params url.Values) (resp []byte, err error) {
+func GetAuthScopes(ctx *ding.DCtx, params url.Values) (resp []byte, err error) {
 	return ctx.HTTPGet(apiAuthScopes + "?" + params.Encode())
 }

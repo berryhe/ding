@@ -39,7 +39,7 @@ const (
 // See https://ding-doc.dingtalk.com/document#/org-dev-guide/query-leave-status
 // POST https://oapi.dingtalk.com/topapi/attendance/getleavestatus?access_token=ACCESS_TOKEN
 
-func AttendanceGetLeaveStatus(dCtx *ding.DingCtx, alr entity.AttendanceLeaveRequest) (resp entity.AttendanceLeaveResp, err error) {
+func AttendanceGetLeaveStatus(dCtx *ding.DCtx, alr entity.AttendanceLeaveRequest) (resp entity.AttendanceLeaveResp, err error) {
 	playLoad, err := json.Marshal(alr)
 	if err != nil {
 		return resp, err

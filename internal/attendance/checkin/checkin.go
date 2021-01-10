@@ -38,7 +38,7 @@ const (
 )
 
 // LoopAttendanceCheckinList 如果查询的dingids数量超过50，可帮助循环查询所有
-func LoopAttendanceCheckinList(dctx *ding.DingCtx, dingIDs []string, workDateFrom, workDateTo string, isI18N bool) ([]entity.AttendanceCheckinListResp, error) {
+func LoopAttendanceCheckinList(dctx *ding.DCtx, dingIDs []string, workDateFrom, workDateTo string, isI18N bool) ([]entity.AttendanceCheckinListResp, error) {
 
 	arc := entity.AttendanceCheckinListRequest{
 		WorkDateFrom: workDateFrom,
@@ -73,7 +73,7 @@ func LoopAttendanceCheckinList(dctx *ding.DingCtx, dingIDs []string, workDateFro
 // AttendanceCheckinList 获取打卡结果
 // See https://ding-doc.dingtalk.com/document#/org-dev-guide/get-punch-results
 // POST https://oapi.dingtalk.com/attendance/list?access_token=ACCESS_TOKEN
-func AttendanceCheckinList(dCtx *ding.DingCtx, acr entity.AttendanceCheckinListRequest) (resp entity.AttendanceCheckinListResp, err error) {
+func AttendanceCheckinList(dCtx *ding.DCtx, acr entity.AttendanceCheckinListRequest) (resp entity.AttendanceCheckinListResp, err error) {
 
 	if acr.Limit > 50 || acr.Offset < 0 {
 		err = errors.New("offset 小于0 或 Limit大于50")
@@ -101,7 +101,7 @@ func AttendanceCheckinList(dCtx *ding.DingCtx, acr entity.AttendanceCheckinListR
 // AttendanceListRecord 获取打卡详情
 // See https://ding-doc.dingtalk.com/document#/org-dev-guide/attendance-clock-in-record-is-open
 // POST https://oapi.dingtalk.com/attendance/listrecord?access_token=ACCESS_TOKEN
-func AttendanceListRecord(dCtx *ding.DingCtx, alr entity.AttendanceListRecordRequest) (resp entity.AttendanceListRecordResp, err error) {
+func AttendanceListRecord(dCtx *ding.DCtx, alr entity.AttendanceListRecordRequest) (resp entity.AttendanceListRecordResp, err error) {
 	playLoad, err := json.Marshal(alr)
 	if err != nil {
 		return resp, err
@@ -122,7 +122,7 @@ func AttendanceListRecord(dCtx *ding.DingCtx, alr entity.AttendanceListRecordReq
 // AttendanceRecordUpload 上传打卡记录
 // See https://ding-doc.dingtalk.com/document#/org-dev-guide/upload-punch-records
 // POST https://oapi.dingtalk.com/topapi/attendance/record/upload?access_token=ACCESS_TOKEN
-func AttendanceRecordUpload(dCtx *ding.DingCtx, aru entity.AttendanceRecordUploadRequest) (resp entity.AttendanceRecordUploadResp, err error) {
+func AttendanceRecordUpload(dCtx *ding.DCtx, aru entity.AttendanceRecordUploadRequest) (resp entity.AttendanceRecordUploadResp, err error) {
 	playLoad, err := json.Marshal(aru)
 	if err != nil {
 		return resp, err

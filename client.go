@@ -49,7 +49,7 @@ var (
 )
 
 // HTTPGet GET 请求
-func (dctx *DingCtx) HTTPGet(uri string) (resp []byte, err error) {
+func (dctx *DCtx) HTTPGet(uri string) (resp []byte, err error) {
 	uri, err = dctx.applyAccessToken(uri)
 	if err != nil {
 		return
@@ -57,7 +57,7 @@ func (dctx *DingCtx) HTTPGet(uri string) (resp []byte, err error) {
 	return dctx.httpGet(uri)
 }
 
-func (dctx *DingCtx) httpGet(uri string) (resp []byte, err error) {
+func (dctx *DCtx) httpGet(uri string) (resp []byte, err error) {
 
 	uri = DingdingServerURL + uri
 	if dctx.logger != nil {
@@ -81,7 +81,7 @@ func (dctx *DingCtx) httpGet(uri string) (resp []byte, err error) {
 }
 
 //HTTPPost POST 请求
-func (dctx *DingCtx) HTTPPost(uri string, payload []byte, contentType string) (resp []byte, err error) {
+func (dctx *DCtx) HTTPPost(uri string, payload []byte, contentType string) (resp []byte, err error) {
 	uri, err = dctx.applyAccessToken(uri)
 	if err != nil {
 		return
@@ -91,12 +91,12 @@ func (dctx *DingCtx) HTTPPost(uri string, payload []byte, contentType string) (r
 }
 
 // RobotHTTPPost 为钉钉群机器人专门封装一个
-func (dctx *DingCtx) RobotHTTPPost(uri string, payload io.Reader, contentType string) (resp []byte, err error) {
+func (dctx *DCtx) RobotHTTPPost(uri string, payload io.Reader, contentType string) (resp []byte, err error) {
 	url := fmt.Sprintf("%s?access_token=%s", uri, dctx.Config.RobotToken)
 	return dctx.httpPost(url, payload, contentType)
 }
 
-func (dctx *DingCtx) httpPost(uri string, payload io.Reader, contentType string) (resp []byte, err error) {
+func (dctx *DCtx) httpPost(uri string, payload io.Reader, contentType string) (resp []byte, err error) {
 
 	uri = DingdingServerURL + uri
 	if dctx.logger != nil {
@@ -121,7 +121,7 @@ func (dctx *DingCtx) httpPost(uri string, payload io.Reader, contentType string)
 }
 
 // 在请求地址上附加上 access_token
-func (dctx *DingCtx) applyAccessToken(oldURL string) (newURL string, err error) {
+func (dctx *DCtx) applyAccessToken(oldURL string) (newURL string, err error) {
 	accessToken, err := dctx.accessToken.getAccessTokenHandler(dctx.Config.AppKey, dctx.Config.AppSecret)
 	if err != nil {
 		return

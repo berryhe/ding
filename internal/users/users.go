@@ -51,7 +51,7 @@ const (
 // UserCreate 创建用户
 // See https://ding-doc.dingtalk.com/document#/org-dev-guide/create-a-user-v2
 // POST https://oapi.dingtalk.com/topapi/v2/user/create?access_token=ACCESS_TOKEN
-func CreateUser(dCtx ding.DingCtx, createUser entity.CreateUserRequest) (resp entity.CountUserResp, err error) {
+func CreateUser(dCtx ding.DCtx, createUser entity.CreateUserRequest) (resp entity.CountUserResp, err error) {
 	reqData, err := json.Marshal(createUser)
 	if err != nil {
 		return
@@ -72,7 +72,7 @@ func CreateUser(dCtx ding.DingCtx, createUser entity.CreateUserRequest) (resp en
 // UpdateUser 更新用户信息
 // See https://ding-doc.dingtalk.com/document#/org-dev-guide/update-user-information-v2
 // POST https://oapi.dingtalk.com/topapi/v2/user/update?access_token=ACCESS_TOKEN
-func UpdateUser(dCtx ding.DingCtx, userUpdateRequest entity.UserUpdateRequest) (resp entity.UserUpdateResp, err error) {
+func UpdateUser(dCtx ding.DCtx, userUpdateRequest entity.UserUpdateRequest) (resp entity.UserUpdateResp, err error) {
 	playLoad, err := json.Marshal(userUpdateRequest)
 	if err != nil {
 		return
@@ -93,7 +93,7 @@ func UpdateUser(dCtx ding.DingCtx, userUpdateRequest entity.UserUpdateRequest) (
 // DeleteUser 删除用户
 // See https://ding-doc.dingtalk.com/document#/org-dev-guide/delete-a-user-v2
 // POST https://oapi.dingtalk.com/topapi/v2/user/delete?access_token=ACCESS_TOKEN
-func DeleteUser(dCtx ding.DingCtx, userID string) error {
+func DeleteUser(dCtx ding.DCtx, userID string) error {
 	playLoad := []byte(fmt.Sprintf(`{"userid":"%s"}`, userID))
 
 	_, err := dCtx.HTTPPost(apiDeleteUser, playLoad, ding.DefaultPostDecodeStr)
@@ -104,7 +104,7 @@ func DeleteUser(dCtx ding.DingCtx, userID string) error {
 // GetUserInfo 获取用户详情
 // See https://ding-doc.dingtalk.com/document#/org-dev-guide/queries-user-details-v2
 // POST https://oapi.dingtalk.com/topapi/v2/user/get?access_token=ACCESS_TOKEN
-func GetUserInfo(dCtx *ding.DingCtx, userInfo entity.UserInfoRequest) (resp entity.UserInfoResp, err error) {
+func GetUserInfo(dCtx *ding.DCtx, userInfo entity.UserInfoRequest) (resp entity.UserInfoResp, err error) {
 	data, err := json.Marshal(userInfo)
 	if err != nil {
 		return
@@ -128,7 +128,7 @@ func GetUserInfo(dCtx *ding.DingCtx, userInfo entity.UserInfoRequest) (resp enti
 // 是否包含未激活钉钉人数：
 // 		false：包含未激活钉钉的人员数量。
 // 		true：只包含激活钉钉的人员数量。
-func CountUser(dCtx *ding.DingCtx, onlyActive bool) (int, error) {
+func CountUser(dCtx *ding.DCtx, onlyActive bool) (int, error) {
 
 	uCount := entity.CountUserRequest{
 		OnlyActive: onlyActive,
@@ -156,7 +156,7 @@ func CountUser(dCtx *ding.DingCtx, onlyActive bool) (int, error) {
 // ListAdmin 获取管理员列表
 // See https://ding-doc.dingtalk.com/document#/org-dev-guide/obtains-a-list-of-administrators-v2
 // POST https://oapi.dingtalk.com/topapi/user/listadmin?access_token=ACCESS_TOKEN
-func ListAdmin(dCtx *ding.DingCtx) (resp entity.AdminListResp, err error) {
+func ListAdmin(dCtx *ding.DCtx) (resp entity.AdminListResp, err error) {
 
 	respData, err := dCtx.HTTPPost(apiListAdmin, nil, ding.DefaultPostDecodeStr)
 	if err != nil {
@@ -172,7 +172,7 @@ func ListAdmin(dCtx *ding.DingCtx) (resp entity.AdminListResp, err error) {
 }
 
 // LoopGetInActiveUser 帮助循环获取未登录员工列表
-func LoopGetInActiveUser(dCtx ding.DingCtx, deptIDs []int, queryData string, isActive bool) ([]entity.GetInactiveResp, error) {
+func LoopGetInActiveUser(dCtx ding.DCtx, deptIDs []int, queryData string, isActive bool) ([]entity.GetInactiveResp, error) {
 	ir := entity.GetInactiveRequest{
 		IsActive:  isActive,
 		DeptIds:   deptIDs,
@@ -181,9 +181,10 @@ func LoopGetInActiveUser(dCtx ding.DingCtx, deptIDs []int, queryData string, isA
 		QueryDate: queryData,
 	}
 
-	var resps []entity.GetInactiveResp
-
-	var dfs func(entity.GetInactiveRequest)
+	var (
+		resps []entity.GetInactiveResp
+		dfs   func(entity.GetInactiveRequest)
+	)
 
 	dfs = func(ir entity.GetInactiveRequest) {
 		resp, err := GetInActiveUser(dCtx, ir)
@@ -207,7 +208,7 @@ func LoopGetInActiveUser(dCtx ding.DingCtx, deptIDs []int, queryData string, isA
 // deptIDs 不传默认整个企业
 // See https://ding-doc.dingtalk.com/document#/org-dev-guide/obtains-employees-not-logged-v2
 // POST https://oapi.dingtalk.com/topapi/inactive/user/v2/get?access_token=ACCESS_TOKEN
-func GetInActiveUser(dCtx ding.DingCtx, inactiveReq entity.GetInactiveRequest) (resp entity.GetInactiveResp, err error) {
+func GetInActiveUser(dCtx ding.DCtx, inactiveReq entity.GetInactiveRequest) (resp entity.GetInactiveResp, err error) {
 
 	if inactiveReq.Size > 100 || inactiveReq.Offset < 0 {
 		err = errors.New("offset 小于0 或 Size大于100")
@@ -234,7 +235,7 @@ func GetInActiveUser(dCtx ding.DingCtx, inactiveReq entity.GetInactiveRequest) (
 // GetAdminScope 获取管理员通讯录权限范围
 // See https://ding-doc.dingtalk.com/document#/org-dev-guide/obtain-the-administrator-addressbook-permission-v2
 // POST https://oapi.dingtalk.com/topapi/user/get_admin_scope?access_token=ACCESS_TOKEN
-func GetAdminScope(dCtx ding.DingCtx, userID string) (resp entity.AdminScopeResp, err error) {
+func GetAdminScope(dCtx ding.DCtx, userID string) (resp entity.AdminScopeResp, err error) {
 	reqData := []byte(fmt.Sprintf(`{"userid":"%s"}`, userID))
 
 	respData, err := dCtx.HTTPPost(apiGetAdminScope, reqData, ding.DefaultPostDecodeStr)
@@ -250,7 +251,7 @@ func GetAdminScope(dCtx ding.DingCtx, userID string) (resp entity.AdminScopeResp
 }
 
 // LoopListUsers 循环帮助获取部门用户详情所有数据
-func LoopListUsers(dCtx *ding.DingCtx, depUserList entity.DepUserListRequest) (resps []entity.DepUserListResp, err error) {
+func LoopListUsers(dCtx *ding.DCtx, depUserList entity.DepUserListRequest) (resps []entity.DepUserListResp, err error) {
 	var dfs func(entity.DepUserListRequest)
 
 	dfs = func(depUserList entity.DepUserListRequest) {
@@ -273,7 +274,7 @@ func LoopListUsers(dCtx *ding.DingCtx, depUserList entity.DepUserListRequest) (r
 // 获取部门用户详情
 // See https://ding-doc.dingtalk.com/document#/org-dev-guide/queries-department-user-details-v2
 // POST https://oapi.dingtalk.com/topapi/v2/user/list?access_token=ACCESS_TOKEN
-func ListUsers(dCtx *ding.DingCtx, depUserList entity.DepUserListRequest) (resp entity.DepUserListResp, err error) {
+func ListUsers(dCtx *ding.DCtx, depUserList entity.DepUserListRequest) (resp entity.DepUserListResp, err error) {
 	reqData, err := json.Marshal(depUserList)
 	if err != nil {
 		return
@@ -292,7 +293,7 @@ func ListUsers(dCtx *ding.DingCtx, depUserList entity.DepUserListRequest) (resp 
 }
 
 // LoopListUserSimple 循环帮助获取部门用户
-func LoopListUserSimple(dCtx *ding.DingCtx, userListSimple entity.UserListSimpleRequest) (resps []entity.UserListSimpleResp, err error) {
+func LoopListUserSimple(dCtx *ding.DCtx, userListSimple entity.UserListSimpleRequest) (resps []entity.UserListSimpleResp, err error) {
 	var dfs func(entity.UserListSimpleRequest)
 
 	dfs = func(userListSimple entity.UserListSimpleRequest) {
@@ -315,7 +316,7 @@ func LoopListUserSimple(dCtx *ding.DingCtx, userListSimple entity.UserListSimple
 // ListUserSimple 获取部门用户
 // See https://ding-doc.dingtalk.com/document#/org-dev-guide/obtains-users-of-department-v2
 // POST https://oapi.dingtalk.com/topapi/user/listsimple?access_token=ACCESS_TOKEN
-func ListUserSimple(dCtx *ding.DingCtx, userListSimple entity.UserListSimpleRequest) (resp entity.UserListSimpleResp, err error) {
+func ListUserSimple(dCtx *ding.DCtx, userListSimple entity.UserListSimpleRequest) (resp entity.UserListSimpleResp, err error) {
 	reqData, err := json.Marshal(userListSimple)
 	if err != nil {
 		return
@@ -336,7 +337,7 @@ func ListUserSimple(dCtx *ding.DingCtx, userListSimple entity.UserListSimpleRequ
 // ListUserIDs 获取部门用户userid列表
 // See https://ding-doc.dingtalk.com/document#/org-dev-guide/query-the-userid-list-of-a-department-v2
 // POST https://oapi.dingtalk.com/topapi/user/listid?access_token=ACCESS_TOKEN
-func ListUserIDs(dCtx *ding.DingCtx, depID int) (resp entity.ListUsersResp, err error) {
+func ListUserIDs(dCtx *ding.DCtx, depID int) (resp entity.ListUsersResp, err error) {
 	reqData := []byte(fmt.Sprintf(`{ "dept_id":"%d"}`, depID))
 
 	respData, err := dCtx.HTTPPost(apiDepListUserIDs, reqData, ding.DefaultPostDecodeStr)
@@ -353,7 +354,7 @@ func ListUserIDs(dCtx *ding.DingCtx, depID int) (resp entity.ListUsersResp, err 
 // GetUserMobileByUserID 根据手机号获取userid
 // See https://ding-doc.dingtalk.com/document#/org-dev-guide/query-users-by-phone-number-v2
 // POST https://oapi.dingtalk.com/topapi/v2/user/getbymobile?access_token=ACCESS_TOKEN
-func GetUserMobileByUserID(dCtx *ding.DingCtx, userMobile string) (string, error) {
+func GetUserMobileByUserID(dCtx *ding.DCtx, userMobile string) (string, error) {
 	reqData := []byte(fmt.Sprintf(`{ "mobile":"%s"}`, userMobile))
 
 	respData, err := dCtx.HTTPPost(apiGetUserMobileByID, reqData, ding.DefaultPostDecodeStr)
@@ -372,7 +373,7 @@ func GetUserMobileByUserID(dCtx *ding.DingCtx, userMobile string) (string, error
 // GetUnionIDByUser 根据unionid获取用户信息
 // See https://ding-doc.dingtalk.com/document#/org-dev-guide/retrieve-user-information-by-unionid-v2
 // POST https://oapi.dingtalk.com/topapi/user/getbyunionid?access_token=ACCESS_TOKEN
-func GetUnionIDByUser(dCtx *ding.DingCtx, unionID string) (resp entity.UnionIDByUserIDResp, err error) {
+func GetUnionIDByUser(dCtx *ding.DCtx, unionID string) (resp entity.UnionIDByUserIDResp, err error) {
 	reqData := []byte(fmt.Sprintf(`{ "unionid":"%s"}`, unionID))
 	respData, err := dCtx.HTTPPost(apiUnionIDByUserID, reqData, ding.DefaultPostDecodeStr)
 	if err != nil {

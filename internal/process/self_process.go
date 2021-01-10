@@ -32,6 +32,6 @@ const (
 // SelfGetByName 获取模板code
 // See: https://ding-doc.dingtalk.com/document#/org-dev-guide/obtain-the-template-code
 // POST https://oapi.dingtalk.com/topapi/process/get_by_name?access_token=ACCESS_TOKEN
-func SelfGetByName(dctx *ding.DingCtx, payload []byte) (resp []byte, err error) {
-	return dctx.HTTPPost(apiGetProcessCode, payload, ding.DefaultPostDecodeStr)
+func SelfGetByName(dCtx *ding.DCtx, payload []byte) (resp []byte, err error) {
+	return dCtx.HTTPPost(apiGetProcessCode, payload, ding.DefaultPostDecodeStr)
 }

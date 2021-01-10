@@ -30,12 +30,12 @@ import (
 )
 
 func TestCreate(t *testing.T) {
-	config := ding.AppConfig{
+	config := ding.DingConfig{
 		AgentID:   12345678,
 		AppKey:    "dingappkey",
 		AppSecret: "dingappSecretKey",
 	}
-	appCtx := ding.NewApp(config)
+	appCtx := ding.NewDCtx(config)
 
 	calendarCreate := entity.CalendarCreateRequest{}
 	resp, err := Create(appCtx, calendarCreate)

@@ -31,9 +31,9 @@ import (
 // GetAccessTokenFunc 获取 access_token 方法接口
 type GetAccessTokenFunc func(appKey, appSecret string) (accessToken string, err error)
 
-// App 实例
-type DingCtx struct {
-	Config      DingConfig
+// DingCtx 实例
+type DCtx struct {
+	Config      Config
 	accessToken AccessToken
 	httpClient  *http.Client
 	logger      Logger
@@ -45,8 +45,8 @@ type AccessToken struct {
 	getAccessTokenHandler GetAccessTokenFunc
 }
 
-// DingConfig 主配置
-type DingConfig struct {
+// Config 主配置
+type Config struct {
 	CorpID         string
 	AgentID        int
 	AppKey         string
@@ -57,15 +57,15 @@ type DingConfig struct {
 }
 
 // NewDCtx 初始化项
-func NewDCtx(config DingConfig) (app *DingCtx) {
+func NewDCtx(config Config) (app *DCtx) {
 	app = newDCtx(config)
 	app.accessToken.getAccessTokenHandler = app.getAccessToken
 	return
 }
 
 // 创建实例
-func newDCtx(config DingConfig) (app *DingCtx) {
-	return &DingCtx{
+func newDCtx(config Config) (app *DCtx) {
+	return &DCtx{
 		Config:     config,
 		httpClient: &http.Client{},
 		accessToken: AccessToken{
@@ -75,24 +75,24 @@ func newDCtx(config DingConfig) (app *DingCtx) {
 }
 
 // SetHTTPClient 自定义设置钉钉Api请求HTTP客户端
-func (dctx *DingCtx) SetHTTPClient(client *http.Client) {
-	dctx.httpClient = client
+func (dCtx *DCtx) SetHTTPClient(client *http.Client) {
+	dCtx.httpClient = client
 }
 
 // SetAccessTokenCacheDriver 设置 AccessToken 缓存器 默认为内存缓存
 // 驱动接口类型 为 cache.Cache
-func (dctx *DingCtx) SetAccessTokenCacheDriver(driver cache.Cache) {
-	dctx.accessToken.cache = driver
+func (dCtx *DCtx) SetAccessTokenCacheDriver(driver cache.Cache) {
+	dCtx.accessToken.cache = driver
 }
 
 // SetGetAccessTokenHandler 设置 AccessToken 获取方法。默认从sync.Map获取（过期从钉钉接口刷新）
 // 如果有多实例服务，可以设置为 Redis 或 rpc 等中间件中获取就可以避免 AccessToken 刷新冲突
-func (dctx *DingCtx) SetGetAccessTokenHandler(f GetAccessTokenFunc) {
-	dctx.accessToken.getAccessTokenHandler = f
+func (dCtx *DCtx) SetGetAccessTokenHandler(f GetAccessTokenFunc) {
+	dCtx.accessToken.getAccessTokenHandler = f
 }
 
 // SetLogger 日志记录
 // 默认不开启日志，开了也只是输出debug级别的日志
-func (dctx *DingCtx) SetLogger(logger Logger) {
-	dctx.logger = logger
+func (dCtx *DCtx) SetLogger(logger Logger) {
+	dCtx.logger = logger
 }

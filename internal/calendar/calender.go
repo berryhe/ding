@@ -40,7 +40,7 @@ const (
 // Create 钉日程的创建
 // See: https://ding-doc.dingtalk.com/document#/org-dev-guide/create-schedule
 // POST https://oapi.dingtalk.com/topapi/calendar/v2/event/update?access_token=ACCESS_TOKEN
-func Create(ctx *ding.DingCtx, calendarCreate entity.CalendarCreateRequest) (calenderCreateResp entity.CalendarCreateResp, err error) {
+func Create(ctx *ding.DCtx, calendarCreate entity.CalendarCreateRequest) (calenderCreateResp entity.CalendarCreateResp, err error) {
 	playload, err := json.Marshal(calendarCreate)
 	if err != nil {
 		return
@@ -60,7 +60,7 @@ func Create(ctx *ding.DingCtx, calendarCreate entity.CalendarCreateRequest) (cal
 // Update 钉日程的修改
 // See: https://ding-doc.dingtalk.com/document#/org-dev-guide/create-schedule
 // POST https://oapi.dingtalk.com/topapi/calendar/v2/event/update?access_token=ACCESS_TOKEN
-func Update(ctx *ding.DingCtx, calendarUpdate entity.CalendarUpdateRequest) (calendarUpdateResp entity.CalendarUpdateResp, err error) {
+func Update(ctx *ding.DCtx, calendarUpdate entity.CalendarUpdateRequest) (calendarUpdateResp entity.CalendarUpdateResp, err error) {
 	playload, err := json.Marshal(calendarUpdate)
 	if err != nil {
 		return
@@ -80,7 +80,7 @@ func Update(ctx *ding.DingCtx, calendarUpdate entity.CalendarUpdateRequest) (cal
 // AttendeeUpdate 修改日程参与者
 // See: https://ding-doc.dingtalk.com/document#/org-dev-guide/modify-schedule-participant
 // POST POST https://oapi.dingtalk.com/topapi/calendar/v2/attendee/update?access_token=ACCESS_TOKEN
-func AttendeeUpdate(ctx *ding.DingCtx, calendarAtUpdate entity.CalendarAttendeeUpdateRequest) (calendarUpdateAtResp entity.CalendarAttendeeUpdateResp, err error) {
+func AttendeeUpdate(ctx *ding.DCtx, calendarAtUpdate entity.CalendarAttendeeUpdateRequest) (calendarUpdateAtResp entity.CalendarAttendeeUpdateResp, err error) {
 	playload, err := json.Marshal(calendarAtUpdate)
 	if err != nil {
 		return
@@ -100,7 +100,7 @@ func AttendeeUpdate(ctx *ding.DingCtx, calendarAtUpdate entity.CalendarAttendeeU
 // Cancel 钉日程的取消
 // See: https://ding-doc.dingtalk.com/document#/org-dev-guide/cancel-schedule
 // POST POST https://oapi.dingtalk.com/topapi/calendar/v2/event/cancel?access_token=ACCESS_TOKEN
-func Cancel(ctx *ding.DingCtx, calendarCancel entity.CalendarCancelRequest) (calendarCancelResp entity.CalendarCancelRespo, err error) {
+func Cancel(ctx *ding.DCtx, calendarCancel entity.CalendarCancelRequest) (calendarCancelResp entity.CalendarCancelResp, err error) {
 	playload, err := json.Marshal(calendarCancel)
 	if err != nil {
 		return

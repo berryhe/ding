@@ -30,6 +30,7 @@ import (
 	"github.com/Berry961103/ding"
 	"github.com/Berry961103/ding/entity"
 )
+
 const (
 	robotAPI = "/robot/send"
 )
@@ -53,6 +54,6 @@ func DingRobotText(dctx *ding.DingCtx, msg string, phone []string) error {
 		return err
 	}
 
-	_,err=dctx.RobotHTTPPost(robotAPI, bytes.NewReader(reqData), ding.DefaultPostDecodeStr)
+	_, err = dctx.RobotHTTPPost(robotAPI, bytes.NewReader(reqData), ding.DefaultPostDecodeStr)
 	return err
 }

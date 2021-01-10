@@ -14,10 +14,10 @@
     )
 
     func main() {
-        config := ding.DingConfig{
+        config := ding.Config{
             RobotToken: "1111",
         }
-        dingCtx := ding.NewDCtx(config)
+        dingCtx := ding.DCtx(config)
 
         err := robot.DingRobotText(dingCtx, "berry", []string{"12345678"})
         if err != nil {
@@ -35,12 +35,12 @@
     )
 
     func main(){
-        config := ding.DingConfig{
+        config := ding.Config{
             AgentID:   12345678,
             AppKey:    "AppKey",
             AppSecret: "AppSecre",
         }
-        dingCtx := ding.NewDCtx(config)
+        dingCtx := ding.DCtx(config)
 
         calendarCreate := entity.CalendarCreateRequest{}
         resp, err := calendar.Create(dingCtx, calendarCreate)

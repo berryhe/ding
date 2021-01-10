@@ -40,48 +40,48 @@ const (
 // Create 发起审批实例
 // See: https://ding-doc.dingtalk.com/document#/org-dev-guide/initiate-DingCtxroval
 // POST https://oapi.dingtalk.com/topapi/processinstance/create?access_token=ACCESS_TOKEN
-func Create(dctx *ding.DingCtx, payload []byte) (resp []byte, err error) {
-	return dctx.HTTPPost(apiCreate, payload, ding.DefaultPostDecodeStr)
+func Create(dCtx *ding.DCtx, payload []byte) (resp []byte, err error) {
+	return dCtx.HTTPPost(apiCreate, payload, ding.DefaultPostDecodeStr)
 }
 
 // ListIds 批量获取审批实例id
 // See: https://ding-doc.dingtalk.com/document#/org-dev-guide/obtain-an-DingCtxroval-list-of-instance-ids
 // POST https://oapi.dingtalk.com/topapi/processinstance/listids?access_token=ACCESS_TOKEN
-func ListIds(dctx *ding.DingCtx, payload []byte) (resp []byte, err error) {
-	return dctx.HTTPPost(apiListIds, payload, ding.DefaultPostDecodeStr)
+func ListIds(dCtx *ding.DCtx, payload []byte) (resp []byte, err error) {
+	return dCtx.HTTPPost(apiListIds, payload, ding.DefaultPostDecodeStr)
 }
 
 // Get 获取审批实例详情
 // See: https://ding-doc.dingtalk.com/document#/org-dev-guide/obtains-details-about-a-specified-DingCtxroval-instance
 // POST https://oapi.dingtalk.com/topapi/processinstance/get?access_token=ACCESS_TOKEN
-func Get(dctx *ding.DingCtx, payload []byte) (resp []byte, err error) {
-	return dctx.HTTPPost(apiGet, payload, ding.DefaultPostDecodeStr)
+func Get(dCtx *ding.DCtx, payload []byte) (resp []byte, err error) {
+	return dCtx.HTTPPost(apiGet, payload, ding.DefaultPostDecodeStr)
 }
 
 // GetTodoNum 获取用户待审批数量
 // See: https://ding-doc.dingtalk.com/document#/org-dev-guide/obtains-the-number-of-requests-for-DingCtxroval-by-a-specified
 // POST https://oapi.dingtalk.com/topapi/process/gettodonum?access_token=ACCESS_TOKEN
-func GetTodoNum(dctx *ding.DingCtx, payload []byte) (resp []byte, err error) {
-	return dctx.HTTPPost(apiGetTodoNum, payload, ding.DefaultPostDecodeStr)
+func GetTodoNum(dCtx *ding.DCtx, payload []byte) (resp []byte, err error) {
+	return dCtx.HTTPPost(apiGetTodoNum, payload, ding.DefaultPostDecodeStr)
 }
 
 // ListByUserID 获取用户可见的审批模板
 // See: https://ding-doc.dingtalk.com/document#/org-dev-guide/obtains-a-list-of-DingCtxroval-forms-visible-to-the-specified
 // POST https://oapi.dingtalk.com/topapi/process/listbyuserid?access_token=ACCESS_TOKEN
-func ListByUserID(dctx *ding.DingCtx, payload []byte) (resp []byte, err error) {
-	return dctx.HTTPPost(apiListByUserID, payload, ding.DefaultPostDecodeStr)
+func ListByUserID(dCtx *ding.DCtx, payload []byte) (resp []byte, err error) {
+	return dCtx.HTTPPost(apiListByUserID, payload, ding.DefaultPostDecodeStr)
 }
 
 // CspaceInfo 获取审批钉盘空间信息
 // See: https://ding-doc.dingtalk.com/document#/org-dev-guide/obtains-the-information-about-DingCtxroval-nail-disk
 // POST https://oapi.dingtalk.com/topapi/processinstance/cspace/info?access_token=ACCESS_TOKEN
-func CspaceInfo(dctx *ding.DingCtx, payload []byte) (resp []byte, err error) {
-	return dctx.HTTPPost(apiCspaceInfo, payload, ding.DefaultPostDecodeStr)
+func CspaceInfo(dCtx *ding.DCtx, payload []byte) (resp []byte, err error) {
+	return dCtx.HTTPPost(apiCspaceInfo, payload, ding.DefaultPostDecodeStr)
 }
 
 // CspacePreview 预览审批附件
 // See: https://ding-doc.dingtalk.com/document#/org-dev-guide/preview-authorization-attachment
 // POST POST https://oapi.dingtalk.com/topapi/processinstance/cspace/preview?access_token=ACCESS_TOKEN
-func CspacePreview(dctx *ding.DingCtx, payload []byte) (resp []byte, err error) {
-	return dctx.HTTPPost(apiCspacePreview, payload, ding.DefaultPostDecodeStr)
+func CspacePreview(dCtx *ding.DCtx, payload []byte) (resp []byte, err error) {
+	return dCtx.HTTPPost(apiCspacePreview, payload, ding.DefaultPostDecodeStr)
 }

@@ -32,12 +32,12 @@ import (
 
 // 从缓存获取 access_token
 // 如果没有 access_token 或者已过期，那就刷新
-func (dctx *DingCtx) getAccessToken(appKey, appSecretKey string) (accessToken string, err error) {
+func (dctx *DCtx) getAccessToken(appKey, appSecretKey string) (accessToken string, err error) {
 
 	cacheKey := fmt.Sprintf("ding_access_token:%s", appKey)
 
 	accessToken, err = dctx.accessToken.cache.Fetch(cacheKey)
-	if accessToken != "" {
+	if len(accessToken) == 0 {
 		return
 	}
 
@@ -63,7 +63,7 @@ func (dctx *DingCtx) getAccessToken(appKey, appSecretKey string) (accessToken st
 // refreshAccessToken 从服务器获取新的
 // See: https://ding-doc.dingtalk.com/document#/org-dev-guide/obtain-access_token
 // GET https://oapi.dingtalk.com/gettoken?dctxkey=dctxkey&dctxsecret=dctxsecret
-func (dctx *DingCtx) refreshAccessToken(appKey, appSecretKey string) (accessToken string, expiresIn int, err error) {
+func (dctx *DCtx) refreshAccessToken(appKey, appSecretKey string) (accessToken string, expiresIn int, err error) {
 
 	params := url.Values{}
 	params.Add("appkey", appKey)

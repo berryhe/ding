@@ -33,8 +33,8 @@ type (
 
 	// CalendarCreateResp 日程创建返回
 	CalendarCreateResp struct {
-		Errcode   int                  `json:"errcode"`
-		Errmsg    string               `json:"errmsg"`
+		ErrCode   int                  `json:"errcode"`
+		ErrMsg    string               `json:"errmsg"`
 		Result    CalendarCreateResult `json:"result"`
 		Success   bool                 `json:"success"`
 		RequestID string               `json:"request_id"`
@@ -119,8 +119,8 @@ type (
 	}
 	// CalendarAttendeeUpdateResp 更新日程参与者返回
 	CalendarAttendeeUpdateResp struct {
-		Errcode   int    `json:"errcode"`
-		Errmsg    string `json:"errmsg"`
+		ErrCode   int    `json:"errcode"`
+		ErrMsg    string `json:"errmsg"`
 		Success   bool   `json:"success"`
 		RequestID string `json:"request_id"`
 	}
@@ -134,9 +134,9 @@ type (
 		CalendarID string `json:"calendar_id"`
 	}
 	// CalendarCancelRespo 日程取消返回
-	CalendarCancelRespo struct {
-		Errcode   int    `json:"errcode"`
-		Errmsg    string `json:"errmsg"`
+	CalendarCancelResp struct {
+		ErrCode   int    `json:"errcode"`
+		ErrMsg    string `json:"errmsg"`
 		Success   bool   `json:"success"`
 		RequestID string `json:"request_id"`
 	}
