@@ -33,7 +33,7 @@ import (
 
 const (
 	apiAttendanceList         = "/attendance/list"
-	apiAttendanceListRecord   = "/attendance/listRecord"
+	apiAttendanceListRecord   = "/attendance/listrecord"
 	apiAttendanceUploadRecord = "/topapi/attendance/record/upload"
 )
 
@@ -107,7 +107,7 @@ func AttendanceListRecord(dCtx *ding.DCtx, alr entity.AttendanceListRecordReques
 		return resp, err
 	}
 
-	data, err := dCtx.HTTPPost(apiAttendanceList, playLoad, ding.DefaultPostDecodeStr)
+	data, err := dCtx.HTTPPost(apiAttendanceListRecord, playLoad, ding.DefaultPostDecodeStr)
 	if err != nil {
 		return
 	}
