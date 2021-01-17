@@ -7,14 +7,14 @@ import (
 )
 
 func TestGroupAlg(t *testing.T) {
-	c := 10
+	c := 105
 	randStrArr := make([]string, c)
 	for i := 0; i < c; i++ {
 		randStrArr[i] = strconv.Itoa(rand.Intn(7))
 	}
 
 	t.Logf("%+v\n", randStrArr)
-	res := StrArrGroupAlg(randStrArr, 50)
+	res := StrArrGroupAlg(randStrArr, -1)
 	t.Log(len(res))
 	t.Logf("%+v\n", res)
 }

@@ -4,7 +4,7 @@ package internal
 func StrArrGroupAlg(strArr []string, n int) [][]string {
 	saLen := len(strArr)
 
-	if saLen == 0 {
+	if saLen == 0 || n <= 0 {
 		return nil
 	}
 
