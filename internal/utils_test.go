@@ -18,3 +18,9 @@ func TestGroupAlg(t *testing.T) {
 	t.Log(len(res))
 	t.Logf("%+v\n", res)
 }
+
+func TestFlipByteSlice(t *testing.T) {
+	c := []byte("12345678")
+	res := FlipByteSlice(c)
+	t.Log(string(res))
+}
