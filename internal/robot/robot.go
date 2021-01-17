@@ -36,7 +36,7 @@ const (
 )
 
 // DingRobotText Send ding robot text
-func DingRobotText(dctx *ding.DingCtx, msg string, phone []string) error {
+func DingRobotText(dCtx *ding.DCtx, msg string, phone []string) error {
 
 	sg := entity.SendGrouptype{
 		MsgType: "text",
@@ -54,6 +54,6 @@ func DingRobotText(dctx *ding.DingCtx, msg string, phone []string) error {
 		return err
 	}
 
-	_, err = dctx.RobotHTTPPost(robotAPI, bytes.NewReader(reqData), ding.DefaultPostDecodeStr)
+	_, err = dCtx.RobotHTTPPost(robotAPI, bytes.NewReader(reqData), ding.DefaultPostDecodeStr)
 	return err
 }
