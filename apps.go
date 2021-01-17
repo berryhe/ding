@@ -32,18 +32,18 @@ import (
 
 // 从缓存获取 access_token
 // 如果没有 access_token 或者已过期，那就刷新
-func (dctx *DCtx) getAccessToken(appKey, appSecretKey string) (accessToken string, err error) {
+func (dCtx *DCtx) getAccessToken(appKey, appSecretKey string) (accessToken string, err error) {
 
 	cacheKey := fmt.Sprintf("ding_access_token:%s", appKey)
 
-	accessToken, err = dctx.accessToken.cache.Fetch(cacheKey)
-	if len(accessToken) == 0 {
+	accessToken, err = dCtx.accessToken.cache.Fetch(cacheKey)
+	if len(accessToken) != 0 {
 		return
 	}
 
 	var expiresIn int
 
-	accessToken, expiresIn, err = dctx.refreshAccessToken(appKey, appSecretKey)
+	accessToken, expiresIn, err = dCtx.refreshAccessToken(appKey, appSecretKey)
 	if err != nil {
 		return
 	}
@@ -51,10 +51,10 @@ func (dctx *DCtx) getAccessToken(appKey, appSecretKey string) (accessToken strin
 	// 提前 5min 过期 提供冗余时间
 	// Token 有效期为 2 小时，在此期间调用该接口 token 不会改变。当 token 有效期小于 10 分的时候，再次请求获取 token 的时候，会生成一个新的 token，与此同时老的 token 依然有效。
 	d := time.Duration(expiresIn-300) * time.Second
-	_ = dctx.accessToken.cache.Save(cacheKey, accessToken, d)
+	_ = dCtx.accessToken.cache.Save(cacheKey, accessToken, d)
 
-	if dctx.logger != nil {
-		dctx.logger.Debugf("%s %s %d\n", "refreshAccessTokenFromServer", accessToken, expiresIn)
+	if dCtx.logger != nil {
+		dCtx.logger.Debugf("%s %s %d\n", "refreshAccessTokenFromServer", accessToken, expiresIn)
 	}
 
 	return
@@ -63,14 +63,14 @@ func (dctx *DCtx) getAccessToken(appKey, appSecretKey string) (accessToken strin
 // refreshAccessToken 从服务器获取新的
 // See: https://ding-doc.dingtalk.com/document#/org-dev-guide/obtain-access_token
 // GET https://oapi.dingtalk.com/gettoken?dctxkey=dctxkey&dctxsecret=dctxsecret
-func (dctx *DCtx) refreshAccessToken(appKey, appSecretKey string) (accessToken string, expiresIn int, err error) {
+func (dCtx *DCtx) refreshAccessToken(appKey, appSecretKey string) (accessToken string, expiresIn int, err error) {
 
 	params := url.Values{}
 	params.Add("appkey", appKey)
 	params.Add("appsecret", appSecretKey)
 
 	apiGetToken := fmt.Sprintf("%s/gettoken?%s", DingdingServerURL, params.Encode())
-	response, err := dctx.httpClient.Get(apiGetToken)
+	response, err := dCtx.httpClient.Get(apiGetToken)
 	if err != nil {
 		return
 	}
@@ -83,9 +83,9 @@ func (dctx *DCtx) refreshAccessToken(appKey, appSecretKey string) (accessToken s
 	}
 
 	var result = struct {
-		Errcode     int    `json:"errcode"`
+		ErrCode     int    `json:"errcode"`
 		AccessToken string `json:"access_token"`
-		Errmsg      string `json:"errmsg"`
+		ErrMsg      string `json:"errmsg"`
 		ExpiresIn   int    `json:"expires_in"`
 	}{}
 
@@ -94,8 +94,8 @@ func (dctx *DCtx) refreshAccessToken(appKey, appSecretKey string) (accessToken s
 		return
 	}
 
-	if result.AccessToken == "" {
-		err = fmt.Errorf("%s", result.Errmsg)
+	if len(result.AccessToken) == 0 || result.ErrCode != 0 {
+		err = fmt.Errorf("%s", result.ErrMsg)
 		return
 	}
 

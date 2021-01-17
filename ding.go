@@ -50,7 +50,7 @@ type Config struct {
 	CorpID         string
 	AgentID        int
 	AppKey         string
-	AppSecret      string
+	AppSecretKey   string
 	Token          string
 	RobotToken     string
 	EncodingAESKey string

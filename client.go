@@ -49,19 +49,19 @@ var (
 )
 
 // HTTPGet GET 请求
-func (dctx *DCtx) HTTPGet(uri string) (resp []byte, err error) {
-	uri, err = dctx.applyAccessToken(uri)
+func (dCtx *DCtx) HTTPGet(uri string) (resp []byte, err error) {
+	uri, err = dCtx.applyAccessToken(uri)
 	if err != nil {
 		return
 	}
-	return dctx.httpGet(uri)
+	return dCtx.httpGet(uri)
 }
 
-func (dctx *DCtx) httpGet(uri string) (resp []byte, err error) {
+func (dCtx *DCtx) httpGet(uri string) (resp []byte, err error) {
 
 	uri = DingdingServerURL + uri
-	if dctx.logger != nil {
-		dctx.logger.Debugf("GET %s", uri)
+	if dCtx.logger != nil {
+		dCtx.logger.Debugf("GET %s", uri)
 	}
 
 	req, err := http.NewRequest(http.MethodGet, uri, nil)
@@ -70,7 +70,7 @@ func (dctx *DCtx) httpGet(uri string) (resp []byte, err error) {
 	}
 
 	req.Header.Add("User-Agent", UserAgent)
-	response, err := dctx.httpClient.Do(req)
+	response, err := dCtx.httpClient.Do(req)
 
 	if err != nil {
 		return
@@ -81,26 +81,26 @@ func (dctx *DCtx) httpGet(uri string) (resp []byte, err error) {
 }
 
 //HTTPPost POST 请求
-func (dctx *DCtx) HTTPPost(uri string, payload []byte, contentType string) (resp []byte, err error) {
-	uri, err = dctx.applyAccessToken(uri)
+func (dCtx *DCtx) HTTPPost(uri string, payload []byte, contentType string) ([]byte, error) {
+	uri, err := dCtx.applyAccessToken(uri)
 	if err != nil {
-		return
+		return nil, err
 	}
 
-	return dctx.httpPost(uri, bytes.NewReader(payload), contentType)
+	return dCtx.httpPost(uri, bytes.NewReader(payload), contentType)
 }
 
 // RobotHTTPPost 为钉钉群机器人专门封装一个
-func (dctx *DCtx) RobotHTTPPost(uri string, payload io.Reader, contentType string) (resp []byte, err error) {
-	url := fmt.Sprintf("%s?access_token=%s", uri, dctx.Config.RobotToken)
-	return dctx.httpPost(url, payload, contentType)
+func (dCtx *DCtx) RobotHTTPPost(uri string, payload io.Reader, contentType string) ([]byte, error) {
+	robotUrl := fmt.Sprintf("%s?access_token=%s", uri, dCtx.Config.RobotToken)
+	return dCtx.httpPost(robotUrl, payload, contentType)
 }
 
-func (dctx *DCtx) httpPost(uri string, payload io.Reader, contentType string) (resp []byte, err error) {
+func (dCtx *DCtx) httpPost(uri string, payload io.Reader, contentType string) ([]byte, error) {
 
 	uri = DingdingServerURL + uri
-	if dctx.logger != nil {
-		dctx.logger.Debugf("POST %s", uri)
+	if dCtx.logger != nil {
+		dCtx.logger.Debugf("POST %s", uri)
 	}
 
 	req, err := http.NewRequest(http.MethodPost, uri, payload)
@@ -110,10 +110,10 @@ func (dctx *DCtx) httpPost(uri string, payload io.Reader, contentType string) (r
 
 	req.Header.Add("User-Agent", UserAgent)
 	req.Header.Add("Content-Type", contentType)
-	response, err := dctx.httpClient.Do(req)
+	response, err := dCtx.httpClient.Do(req)
 
 	if err != nil {
-		return
+		return nil, err
 	}
 
 	defer response.Body.Close()
@@ -121,18 +121,18 @@ func (dctx *DCtx) httpPost(uri string, payload io.Reader, contentType string) (r
 }
 
 // 在请求地址上附加上 access_token
-func (dctx *DCtx) applyAccessToken(oldURL string) (newURL string, err error) {
-	accessToken, err := dctx.accessToken.getAccessTokenHandler(dctx.Config.AppKey, dctx.Config.AppSecret)
+func (dCtx *DCtx) applyAccessToken(oldURL string) (string, error) {
+	accessToken, err := dCtx.accessToken.getAccessTokenHandler(dCtx.Config.AppKey, dCtx.Config.AppSecretKey)
 	if err != nil {
-		return
+		return "", err
 	}
 
 	parse, err := url.Parse(oldURL)
 	if err != nil {
-		return
+		return "", err
 	}
 
-	newURL = parse.Host + parse.Path + "?access_token=" + accessToken
+	newURL := parse.Host + parse.Path + "?access_token=" + accessToken
 	if len(parse.RawQuery) > 0 {
 		newURL += "&" + parse.RawQuery
 	}
@@ -140,7 +140,7 @@ func (dctx *DCtx) applyAccessToken(oldURL string) (newURL string, err error) {
 	if len(parse.Fragment) > 0 {
 		newURL += "#" + parse.Fragment
 	}
-	return
+	return newURL, nil
 }
 
 /*
@@ -163,16 +163,16 @@ func responseFilter(response *http.Response) (resp []byte, err error) {
 
 	if bytes.HasPrefix(resp, []byte(`{`)) { // 只针对 json
 		errorResponse := struct {
-			Errcode int64  `json:"errcode"`
-			Errmsg  string `json:"errmsg"`
+			ErrCode int64  `json:"errcode"`
+			ErrMsg  string `json:"errmsg"`
 		}{}
 		err = json.Unmarshal(resp, &errorResponse)
 		if err != nil {
 			return
 		}
 
-		if errorResponse.Errcode != 0 {
-			err = errors.New(errorResponse.Errmsg)
+		if errorResponse.ErrCode != 0 {
+			err = errors.New(errorResponse.ErrMsg)
 			return
 		}
 	}

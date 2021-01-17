@@ -27,6 +27,8 @@ import (
 	"encoding/json"
 	"errors"
 
+	"github.com/Berry961103/ding/internal"
+
 	"github.com/Berry961103/ding"
 	"github.com/Berry961103/ding/entity"
 )
@@ -38,7 +40,14 @@ const (
 )
 
 // LoopAttendanceCheckinList 如果查询的dingids数量超过50，可帮助循环查询所有
-func LoopAttendanceCheckinList(dctx *ding.DCtx, dingIDs []string, workDateFrom, workDateTo string, isI18N bool) ([]entity.AttendanceCheckinListResp, error) {
+func LoopAttendanceCheckinList(dCtx *ding.DCtx, dingIDs []string, workDateFrom, workDateTo string, isI18N bool) ([]entity.RecordCheckResult, error) {
+
+	var (
+		resps    []entity.RecordCheckResult
+		resp     entity.AttendanceCheckinListResp
+		loopFunc func(entity.AttendanceCheckinListRequest)
+		err      error
+	)
 
 	arc := entity.AttendanceCheckinListRequest{
 		WorkDateFrom: workDateFrom,
@@ -49,25 +58,35 @@ func LoopAttendanceCheckinList(dctx *ding.DCtx, dingIDs []string, workDateFrom, 
 		IsI18N:       isI18N,
 	}
 
-	var resps []entity.AttendanceCheckinListResp
-
-	var dfs func(entity.AttendanceCheckinListRequest)
-
-	dfs = func(arc entity.AttendanceCheckinListRequest) {
-		resp, err := AttendanceCheckinList(dctx, arc)
+	loopFunc = func(arc entity.AttendanceCheckinListRequest) {
+		resp, err = AttendanceCheckinList(dCtx, arc)
 		if err != nil {
 			return
 		}
 
-		resps = append(resps, resp)
+		resps = append(resps, resp.Recordresult...)
 		if resp.HasMore {
 			arc.Offset += arc.Limit
-			dfs(arc)
+			loopFunc(arc)
 		}
 	}
 
-	dfs(arc)
-	return resps, nil
+	// 根据limit限制个数分组，每一组arc.Limit个
+	dIDGroups := internal.StrArrGroupAlg(dingIDs, arc.Limit)
+
+	for _, d := range dIDGroups {
+		arc.Offset = 0
+		arc.UserIDList = d
+
+		loopFunc(arc)
+
+		if err != nil {
+			return resps, err
+		}
+
+	}
+
+	return resps, err
 }
 
 // AttendanceCheckinList 获取打卡结果
