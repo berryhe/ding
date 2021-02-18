@@ -30,10 +30,10 @@ import (
 )
 
 func TestCreate(t *testing.T) {
-	config := ding.DingConfig{
-		AgentID:   12345678,
-		AppKey:    "dingappkey",
-		AppSecret: "dingappSecretKey",
+	config := ding.Config{
+		AgentID:      12345678,
+		AppKey:       "dingappkey",
+		AppSecretKey: "dingappSecretKey",
 	}
 	appCtx := ding.NewDCtx(config)
 

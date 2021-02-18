@@ -29,10 +29,10 @@ import (
 )
 
 func TestRobotText(t *testing.T) {
-	config := ding.AppConfig{
+	config := ding.Config{
 		RobotToken: "1111",
 	}
-	appCtx := ding.NewApp(config)
+	appCtx := ding.NewDCtx(config)
 
 	err := DingRobotText(appCtx, "berry", []string{"12345678"})
 	if err != nil {
