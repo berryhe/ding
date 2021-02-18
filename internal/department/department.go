@@ -51,7 +51,7 @@ func CreateDepartment(dCtx *ding.DCtx, createDepRequest entity.CreateDepartmentR
 		return
 	}
 
-	respData, err := dCtx.HTTPPost(apiCreateDepartment, reqData, ding.DefaultPostDecodeStr)
+	respData, err := dCtx.HTTPPost(apiCreateDepartment, reqData)
 	if err != nil {
 		return
 	}
@@ -72,7 +72,7 @@ func UpdateDepartment(dCtx *ding.DCtx, updateDepRequest entity.UpdateDepartmentR
 		return
 	}
 
-	respData, err := dCtx.HTTPPost(apiUpdateDepartment, reqData, ding.DefaultPostDecodeStr)
+	respData, err := dCtx.HTTPPost(apiUpdateDepartment, reqData)
 	if err != nil {
 		return
 	}
@@ -90,7 +90,7 @@ func UpdateDepartment(dCtx *ding.DCtx, updateDepRequest entity.UpdateDepartmentR
 func DeleteDepartment(dCtx *ding.DCtx, depID int) error {
 	reqData := []byte(fmt.Sprintf(`{"dep_id:%d"}`, depID))
 
-	_, err := dCtx.HTTPPost(apiDeleteDepartment, reqData, ding.DefaultPostDecodeStr)
+	_, err := dCtx.HTTPPost(apiDeleteDepartment, reqData)
 	if err != nil {
 		return err
 	}
@@ -130,7 +130,7 @@ func GetDepartmentTP(dCtx *ding.DCtx, depID string) (resp entity.GetDepTPResp, e
 func getDepartment(dCtx *ding.DCtx, depID string) ([]byte, error) {
 	reqData := []byte(fmt.Sprintf(`{"id:"%s","lang":"zh_CN"}`, depID))
 
-	return dCtx.HTTPPost(apiGetGetDepartment, reqData, ding.DefaultPostDecodeStr)
+	return dCtx.HTTPPost(apiGetGetDepartment, reqData)
 
 }
 
@@ -145,7 +145,7 @@ func ListDepartmentSubID(dCtx *ding.DCtx, deptID int) (resp entity.ListSubIDsRes
 
 	reqData := []byte(fmt.Sprintf(`{"dept_id:"%d"}`, deptID))
 
-	respData, err := dCtx.HTTPPost(apiListDepartmentSubID, reqData, ding.DefaultPostDecodeStr)
+	respData, err := dCtx.HTTPPost(apiListDepartmentSubID, reqData)
 	if err != nil {
 		return
 	}
@@ -163,7 +163,7 @@ func ListDepartmentSubID(dCtx *ding.DCtx, deptID int) (resp entity.ListSubIDsRes
 func DeptUserIDByListParent(dCtx *ding.DCtx, dUserID string) (resp entity.DeptUserIDByListParentResp, err error) {
 	reqData := []byte(fmt.Sprintf(`{"userid:"%s"}`, dUserID))
 
-	respData, err := dCtx.HTTPPost(apiListParentByUser, reqData, ding.DefaultPostDecodeStr)
+	respData, err := dCtx.HTTPPost(apiListParentByUser, reqData)
 	if err != nil {
 		return
 	}
@@ -186,7 +186,7 @@ func ListParentByDept(dCtx *ding.DCtx, deptID int) (resp entity.ListParentByDept
 
 	reqData := []byte(fmt.Sprintf(`{"dept_id:"%d"}`, deptID))
 
-	respData, err := dCtx.HTTPPost(apiListParentByDept, reqData, ding.DefaultPostDecodeStr)
+	respData, err := dCtx.HTTPPost(apiListParentByDept, reqData)
 	if err != nil {
 		return
 	}
@@ -208,7 +208,7 @@ func ListDepartmentSub(dCtx *ding.DCtx, deptID int) (resp entity.ListDepartmentS
 
 	reqData := []byte(fmt.Sprintf(`{"dept_id:"%d","lang":"zh_CN"}`, deptID))
 
-	respData, err := dCtx.HTTPPost(apiListGetDepartmentSub, reqData, ding.DefaultPostDecodeStr)
+	respData, err := dCtx.HTTPPost(apiListGetDepartmentSub, reqData)
 	if err != nil {
 		return
 	}

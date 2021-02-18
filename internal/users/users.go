@@ -57,7 +57,7 @@ func CreateUser(dCtx ding.DCtx, createUser entity.CreateUserRequest) (resp entit
 		return
 	}
 
-	respData, err := dCtx.HTTPPost(apiCreateUser, reqData, ding.DefaultPostDecodeStr)
+	respData, err := dCtx.HTTPPost(apiCreateUser, reqData)
 	if err != nil {
 		return
 	}
@@ -78,7 +78,7 @@ func UpdateUser(dCtx ding.DCtx, userUpdateRequest entity.UserUpdateRequest) (res
 		return
 	}
 
-	respData, err := dCtx.HTTPPost(apiUpdateUser, playLoad, ding.DefaultPostDecodeStr)
+	respData, err := dCtx.HTTPPost(apiUpdateUser, playLoad)
 	if err != nil {
 		return
 	}
@@ -96,7 +96,7 @@ func UpdateUser(dCtx ding.DCtx, userUpdateRequest entity.UserUpdateRequest) (res
 func DeleteUser(dCtx ding.DCtx, userID string) error {
 	playLoad := []byte(fmt.Sprintf(`{"userid":"%s"}`, userID))
 
-	_, err := dCtx.HTTPPost(apiDeleteUser, playLoad, ding.DefaultPostDecodeStr)
+	_, err := dCtx.HTTPPost(apiDeleteUser, playLoad)
 
 	return err
 }
@@ -110,7 +110,7 @@ func GetUserInfo(dCtx *ding.DCtx, userInfo entity.UserInfoRequest) (resp entity.
 		return
 	}
 
-	respData, err := dCtx.HTTPPost(apiGetUser, data, ding.DefaultPostDecodeStr)
+	respData, err := dCtx.HTTPPost(apiGetUser, data)
 	if err != nil {
 		return
 	}
@@ -139,7 +139,7 @@ func CountUser(dCtx *ding.DCtx, onlyActive bool) (int, error) {
 		return 0, err
 	}
 
-	resp, err := dCtx.HTTPPost(apiCountUser, reqData, ding.DefaultPostDecodeStr)
+	resp, err := dCtx.HTTPPost(apiCountUser, reqData)
 	if err == nil {
 		return 0, err
 	}
@@ -158,7 +158,7 @@ func CountUser(dCtx *ding.DCtx, onlyActive bool) (int, error) {
 // POST https://oapi.dingtalk.com/topapi/user/listadmin?access_token=ACCESS_TOKEN
 func ListAdmin(dCtx *ding.DCtx) (resp entity.AdminListResp, err error) {
 
-	respData, err := dCtx.HTTPPost(apiListAdmin, nil, ding.DefaultPostDecodeStr)
+	respData, err := dCtx.HTTPPost(apiListAdmin, nil)
 	if err != nil {
 		return
 	}
@@ -220,7 +220,7 @@ func GetInActiveUser(dCtx ding.DCtx, inactiveReq entity.GetInactiveRequest) (res
 		return
 	}
 
-	respData, err := dCtx.HTTPPost(apiGetInActiveUser, reqData, ding.DefaultPostDecodeStr)
+	respData, err := dCtx.HTTPPost(apiGetInActiveUser, reqData)
 	if err != nil {
 		return
 	}
@@ -238,7 +238,7 @@ func GetInActiveUser(dCtx ding.DCtx, inactiveReq entity.GetInactiveRequest) (res
 func GetAdminScope(dCtx ding.DCtx, userID string) (resp entity.AdminScopeResp, err error) {
 	reqData := []byte(fmt.Sprintf(`{"userid":"%s"}`, userID))
 
-	respData, err := dCtx.HTTPPost(apiGetAdminScope, reqData, ding.DefaultPostDecodeStr)
+	respData, err := dCtx.HTTPPost(apiGetAdminScope, reqData)
 	if err != nil {
 		return
 	}
@@ -280,7 +280,7 @@ func ListUsers(dCtx *ding.DCtx, depUserList entity.DepUserListRequest) (resp ent
 		return
 	}
 
-	respData, err := dCtx.HTTPPost(apiDepListUser, reqData, ding.DefaultPostDecodeStr)
+	respData, err := dCtx.HTTPPost(apiDepListUser, reqData)
 	if err != nil {
 		return
 	}
@@ -322,7 +322,7 @@ func ListUserSimple(dCtx *ding.DCtx, userListSimple entity.UserListSimpleRequest
 		return
 	}
 
-	respData, err := dCtx.HTTPPost(apiDepListUserSimple, reqData, ding.DefaultPostDecodeStr)
+	respData, err := dCtx.HTTPPost(apiDepListUserSimple, reqData)
 	if err != nil {
 		return
 	}
@@ -340,7 +340,7 @@ func ListUserSimple(dCtx *ding.DCtx, userListSimple entity.UserListSimpleRequest
 func ListUserIDs(dCtx *ding.DCtx, depID int) (resp entity.ListUsersResp, err error) {
 	reqData := []byte(fmt.Sprintf(`{ "dept_id":"%d"}`, depID))
 
-	respData, err := dCtx.HTTPPost(apiDepListUserIDs, reqData, ding.DefaultPostDecodeStr)
+	respData, err := dCtx.HTTPPost(apiDepListUserIDs, reqData)
 	if err != nil {
 		return
 	}
@@ -357,7 +357,7 @@ func ListUserIDs(dCtx *ding.DCtx, depID int) (resp entity.ListUsersResp, err err
 func GetUserMobileByUserID(dCtx *ding.DCtx, userMobile string) (string, error) {
 	reqData := []byte(fmt.Sprintf(`{ "mobile":"%s"}`, userMobile))
 
-	respData, err := dCtx.HTTPPost(apiGetUserMobileByID, reqData, ding.DefaultPostDecodeStr)
+	respData, err := dCtx.HTTPPost(apiGetUserMobileByID, reqData)
 	if err != nil {
 		return "", err
 	}
@@ -375,7 +375,7 @@ func GetUserMobileByUserID(dCtx *ding.DCtx, userMobile string) (string, error) {
 // POST https://oapi.dingtalk.com/topapi/user/getbyunionid?access_token=ACCESS_TOKEN
 func GetUnionIDByUser(dCtx *ding.DCtx, unionID string) (resp entity.UnionIDByUserIDResp, err error) {
 	reqData := []byte(fmt.Sprintf(`{ "unionid":"%s"}`, unionID))
-	respData, err := dCtx.HTTPPost(apiUnionIDByUserID, reqData, ding.DefaultPostDecodeStr)
+	respData, err := dCtx.HTTPPost(apiUnionIDByUserID, reqData)
 	if err != nil {
 		return
 	}

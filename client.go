@@ -81,13 +81,13 @@ func (dCtx *DCtx) httpGet(uri string) (resp []byte, err error) {
 }
 
 //HTTPPost POST 请求
-func (dCtx *DCtx) HTTPPost(uri string, payload []byte, contentType string) ([]byte, error) {
+func (dCtx *DCtx) HTTPPost(uri string, payload []byte) ([]byte, error) {
 	uri, err := dCtx.applyAccessToken(uri)
 	if err != nil {
 		return nil, err
 	}
 
-	return dCtx.httpPost(uri, bytes.NewReader(payload), contentType)
+	return dCtx.httpPost(uri, bytes.NewReader(payload), DefaultPostDecodeStr)
 }
 
 // RobotHTTPPost 为钉钉群机器人专门封装一个

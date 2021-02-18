@@ -104,7 +104,7 @@ func AttendanceCheckinList(dCtx *ding.DCtx, acr entity.AttendanceCheckinListRequ
 		return resp, err
 	}
 
-	data, err := dCtx.HTTPPost(apiAttendanceList, playLoad, ding.DefaultPostDecodeStr)
+	data, err := dCtx.HTTPPost(apiAttendanceList, playLoad)
 	if err != nil {
 		return
 	}
@@ -126,7 +126,7 @@ func AttendanceListRecord(dCtx *ding.DCtx, alr entity.AttendanceListRecordReques
 		return resp, err
 	}
 
-	data, err := dCtx.HTTPPost(apiAttendanceListRecord, playLoad, ding.DefaultPostDecodeStr)
+	data, err := dCtx.HTTPPost(apiAttendanceListRecord, playLoad)
 	if err != nil {
 		return
 	}
@@ -147,7 +147,7 @@ func AttendanceRecordUpload(dCtx *ding.DCtx, aru entity.AttendanceRecordUploadRe
 		return resp, err
 	}
 
-	data, err := dCtx.HTTPPost(apiAttendanceUploadRecord, playLoad, ding.DefaultPostDecodeStr)
+	data, err := dCtx.HTTPPost(apiAttendanceUploadRecord, playLoad)
 	if err != nil {
 		return
 	}

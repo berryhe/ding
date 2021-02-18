@@ -45,7 +45,7 @@ func AttendanceGetLeaveStatus(dCtx *ding.DCtx, alr entity.AttendanceLeaveRequest
 		return resp, err
 	}
 
-	data, err := dCtx.HTTPPost(apiAttendanceGetLeaveStatus, playLoad, ding.DefaultPostDecodeStr)
+	data, err := dCtx.HTTPPost(apiAttendanceGetLeaveStatus, playLoad)
 	if err != nil {
 		return
 	}

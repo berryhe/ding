@@ -31,5 +31,5 @@ const (
 // See https://ding-doc.dingtalk.com/document#/org-dev-guide/queries-attendance-group-list-details
 // POST https://oapi.dingtalk.com/topapi/attendance/getsimplegroups?access_token=ACCESS_TOKEN
 func AttendanceGetSimpleGroups(dCtx *ding.DCtx, payload []byte) ([]byte, error) {
-	return dCtx.HTTPPost(apiAttendanceGetSimpleGroups, payload, ding.DefaultPostDecodeStr)
+	return dCtx.HTTPPost(apiAttendanceGetSimpleGroups, payload)
 }

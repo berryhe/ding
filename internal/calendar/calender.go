@@ -46,7 +46,7 @@ func Create(ctx *ding.DCtx, calendarCreate entity.CalendarCreateRequest) (calend
 		return
 	}
 
-	resp, err := ctx.HTTPPost(apiCreate, playload, ding.DefaultPostDecodeStr)
+	resp, err := ctx.HTTPPost(apiCreate, playload)
 	if err != nil {
 		return
 	}
@@ -66,7 +66,7 @@ func Update(ctx *ding.DCtx, calendarUpdate entity.CalendarUpdateRequest) (calend
 		return
 	}
 
-	resp, err := ctx.HTTPPost(apiUpdate, playload, ding.DefaultPostDecodeStr)
+	resp, err := ctx.HTTPPost(apiUpdate, playload)
 	if err != nil {
 		return
 	}
@@ -86,7 +86,7 @@ func AttendeeUpdate(ctx *ding.DCtx, calendarAtUpdate entity.CalendarAttendeeUpda
 		return
 	}
 
-	resp, err := ctx.HTTPPost(apiAttendeeUpdate, playload, ding.DefaultPostDecodeStr)
+	resp, err := ctx.HTTPPost(apiAttendeeUpdate, playload)
 	if err != nil {
 		return
 	}
@@ -106,7 +106,7 @@ func Cancel(ctx *ding.DCtx, calendarCancel entity.CalendarCancelRequest) (calend
 		return
 	}
 
-	resp, err := ctx.HTTPPost(apiCancel, playload, ding.DefaultPostDecodeStr)
+	resp, err := ctx.HTTPPost(apiCancel, playload)
 	if err != nil {
 		return
 	}
