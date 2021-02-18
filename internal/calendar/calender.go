@@ -38,7 +38,7 @@ const (
 )
 
 // Create 钉日程的创建
-// See: https://ding-doc.dingtalk.com/document#/org-dev-guide/create-schedule
+// See: https://ding-doc.dingtalk.com/document/app/schedule-2-0-creation-interface
 // POST https://oapi.dingtalk.com/topapi/calendar/v2/event/update?access_token=ACCESS_TOKEN
 func Create(ctx *ding.DCtx, calendarCreate entity.CalendarCreateRequest) (calenderCreateResp entity.CalendarCreateResp, err error) {
 	playload, err := json.Marshal(calendarCreate)

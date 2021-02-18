@@ -24,20 +24,65 @@ package calendar
 
 import (
 	"testing"
+	"time"
 
 	"github.com/Berry961103/ding"
 	"github.com/Berry961103/ding/entity"
 )
 
+//AgentId：
+//AppKey：
+//AppSecret：
 func TestCreate(t *testing.T) {
 	config := ding.Config{
-		AgentID:      12345678,
-		AppKey:       "dingappkey",
-		AppSecretKey: "dingappSecretKey",
+
+		AgentID:      1234567890,
+		AppKey:       "dkasdasfdsgdfh",
+		AppSecretKey: "AppSecretKey",
 	}
 	appCtx := ding.NewDCtx(config)
 
-	calendarCreate := entity.CalendarCreateRequest{}
+	calendarCreate := entity.CalendarCreateRequest{
+		AgentID: "12321214",
+
+		Event: entity.Event{
+			Summary:    "测试会议",
+			CalendarID: "primary",
+
+			Reminder: entity.Reminder{
+				Method:  "app",
+				Minutes: 5,
+			},
+			Attendees: []entity.AttendeesType{
+				entity.AttendeesType{
+					UserID: "016262302",
+				},
+				entity.AttendeesType{
+					UserID: "2312fdsf",
+				},
+				entity.AttendeesType{
+					UserID: "asdasdvdv",
+				},
+				entity.AttendeesType{
+					UserID: "sadasd21321",
+				},
+			},
+			Organizer: entity.Organizer{
+				Userid: "asdasd4213",
+			},
+			Start: entity.Time{
+				Timezone:  "Asia/Shanghai",
+				Timestamp: time.Now().Add(10 * time.Minute).Unix(),
+			},
+			End: entity.Time{
+				Timezone:  "Asia/Shanghai",
+				Timestamp: time.Now().Add(30 * time.Minute).Unix(),
+			},
+			Location: entity.Location{
+				Place: "测试",
+			},
+		},
+	}
 	resp, err := Create(appCtx, calendarCreate)
 	if err != nil {
 		t.Error(err)
