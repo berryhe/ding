@@ -23,7 +23,7 @@
 // Package process 智能工作流/自有 interface
 package process
 
-import "github.com/Berry961103/ding"
+import "github.com/berryhe/ding"
 
 const (
 	apiGetProcessCode = "/topapi/process/get_by_name"

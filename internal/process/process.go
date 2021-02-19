@@ -24,7 +24,7 @@
 package process
 
 import (
-	"github.com/Berry961103/ding"
+	"github.com/berryhe/ding"
 )
 
 const (

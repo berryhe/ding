@@ -26,7 +26,7 @@ package auth
 import (
 	"net/url"
 
-	"github.com/Berry961103/ding"
+	"github.com/berryhe/ding"
 )
 
 const (

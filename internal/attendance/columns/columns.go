@@ -21,7 +21,7 @@
 // Package columns
 package columns
 
-import "github.com/Berry961103/ding"
+import "github.com/berryhe/ding"
 
 const (
 	apiAttendanceGetSimpleGroups = "/topapi/attendance/getsimplegroups"

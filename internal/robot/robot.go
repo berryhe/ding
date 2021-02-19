@@ -27,8 +27,8 @@ import (
 	"bytes"
 	"encoding/json"
 
-	"github.com/Berry961103/ding"
-	"github.com/Berry961103/ding/entity"
+	"github.com/berryhe/ding"
+	"github.com/berryhe/ding/entity"
 )
 
 const (

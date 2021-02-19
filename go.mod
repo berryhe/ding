@@ -1,3 +1,3 @@
-module github.com/Berry961103/ding
+module github.com/berryhe/ding
 
 go 1.16

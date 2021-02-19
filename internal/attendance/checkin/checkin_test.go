@@ -4,7 +4,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/Berry961103/ding"
+	"github.com/berryhe/ding"
 )
 
 /*

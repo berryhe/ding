@@ -23,7 +23,7 @@
 // Package schedule api interface
 package schedule
 
-import "github.com/Berry961103/ding"
+import "github.com/berryhe/ding"
 
 const (
 	apiListSchedule            = "/topapi/attendance/listschedule"

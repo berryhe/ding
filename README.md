@@ -2,15 +2,15 @@
     封装操作钉钉api，核心功能已实现。后面会在闲余时间慢慢的加上各种api的实现，意在开箱即用。请给个star
 # 安装
 
-    go get -u github.com/Berry961103/ding
+    go get -u github.com/berryhe/ding
 # 快速开始
 
 #### 钉钉群机器人，目前只实现了文本格式的发送       
 
     import (
 	
-        "github.com/Berry961103/ding"
-        "github.com/Berry961103/ding/internal/robot"
+        "github.com/berryhe/ding"
+        "github.com/berryhe/ding/internal/robot"
     )
 
     func main() {
@@ -25,13 +25,13 @@
         }
     }
 ## API的实现
-#### 目前实现的功能比较少，后面有空会慢慢添加，目前实现功能在[internal](https://github.com/Berry961103/ding/tree/master/internal)中。请持续关注
+#### 目前实现的功能比较少，后面有空会慢慢添加，目前实现功能在[internal](https://github.com/berryhe/ding/tree/master/internal)中。请持续关注
     import (
         "fmt"
 
-        "github.com/Berry961103/ding"
-	    "github.com/Berry961103/ding/entity"
-        "github.com/Berry961103/ding/internal/calendar"
+        "github.com/berryhe/ding"
+	    "github.com/berryhe/ding/entity"
+        "github.com/berryhe/ding/internal/calendar"
     )
 
     func main(){
@@ -56,13 +56,13 @@
 ### 默认为您实现了内存缓存，默认从ding api server获取access_token，默认的http客户端
 
 ## 缓存
-#### 按照[cache](https://github.com/Berry961103/ding/blob/master/cache/cache.go)接口实现功能就可以自定义缓存token
+#### 按照[cache](https://github.com/berryhe/ding/blob/master/cache/cache.go)接口实现功能就可以自定义缓存token
 
     cache:=&RedisCacheImpl{}
     dingCtx.SetAccessTokenCacheDriver(cache)
 
 ## 获取acces_token
-### 每次api的调用都会先去调一次获取access_token的方法，请在获取access_token的方法逻辑里面存入缓存和获取缓存的逻辑，如想自实现请参考源码中默认[getAccessToken](https://github.com/Berry961103/ding/blob/master/apps.go)方法的实现
+### 每次api的调用都会先去调一次获取access_token的方法，请在获取access_token的方法逻辑里面存入缓存和获取缓存的逻辑，如想自实现请参考源码中默认[getAccessToken](https://github.com/berryhe/ding/blob/master/apps.go)方法的实现
 
     // appKey和appSecretKey 会自动帮你从appCoonfig中设置的传入
     func GetAccessToken(appKey, appSecretKey string)(string,error){
@@ -74,7 +74,7 @@
 
 ### 日志
 
-#### 日志目前只输出debug级别的日志，只需要实现 [logger](https://github.com/Berry961103/ding/blob/master/logger.go) 接口即可
+#### 日志目前只输出debug级别的日志，只需要实现 [logger](https://github.com/berryhe/ding/blob/master/logger.go) 接口即可
 
     支持zap
 

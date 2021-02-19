@@ -25,7 +25,7 @@ package ding
 import (
 	"net/http"
 
-	"github.com/Berry961103/ding/cache"
+	"github.com/berryhe/ding/cache"
 )
 
 // GetAccessTokenFunc 获取 access_token 方法接口

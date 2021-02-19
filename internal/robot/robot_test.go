@@ -25,7 +25,7 @@ package robot
 import (
 	"testing"
 
-	"github.com/Berry961103/ding"
+	"github.com/berryhe/ding"
 )
 
 func TestRobotText(t *testing.T) {
