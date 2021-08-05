@@ -10,7 +10,7 @@
     import (
 	
         "github.com/berryhe/ding"
-        "github.com/berryhe/ding/internal/robot"
+        "github.com/berryhe/ding/app/robot"
     )
 
     func main() {
@@ -25,13 +25,13 @@
         }
     }
 ## API的实现
-#### 目前实现的功能比较少，后面有空会慢慢添加，目前实现功能在[internal](https://github.com/berryhe/ding/tree/master/internal)中。请持续关注
+#### 目前实现的功能比较少，后面有空会慢慢添加，目前实现功能在[app](https://github.com/berryhe/ding/tree/master/app)中。请持续关注
     import (
         "fmt"
 
         "github.com/berryhe/ding"
 	    "github.com/berryhe/ding/entity"
-        "github.com/berryhe/ding/internal/calendar"
+        "github.com/berryhe/ding/app/calendar"
     )
 
     func main(){
