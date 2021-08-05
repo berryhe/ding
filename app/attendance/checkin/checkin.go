@@ -27,7 +27,7 @@ import (
 	"encoding/json"
 	"errors"
 
-	"github.com/berryhe/ding/internal"
+	"github.com/berryhe/ding/app"
 
 	"github.com/berryhe/ding"
 	"github.com/berryhe/ding/entity"
@@ -72,7 +72,7 @@ func LoopAttendanceCheckinList(dCtx *ding.DCtx, dingIDs []string, workDateFrom, 
 	}
 
 	// 根据limit限制个数分组，每一组arc.Limit个
-	dIDGroups := internal.StrArrGroupAlg(dingIDs, arc.Limit)
+	dIDGroups := app.StrArrGroupAlg(dingIDs, arc.Limit)
 
 	for _, d := range dIDGroups {
 		arc.Offset = 0

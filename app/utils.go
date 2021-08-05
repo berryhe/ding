@@ -1,4 +1,4 @@
-package internal
+package app
 
 // StrArrGroupAlg 字符串分组算法 字符串切片按n分组
 func StrArrGroupAlg(strArr []string, n int) [][]string {
